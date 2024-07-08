@@ -1,0 +1,10 @@
+Composer: Frédéric Chopin
+Title: Étude Op. 10 No. 12 in C minor
+Analyst: Mark Gotham, manually, through judicious automation, and in collaboration with colleagues and students.
+Note: Please submit a pull request for anything inaccurate, or submit a separate analysis for an alternative reading.
+
+Time Signature: 4/4
+
+m1 c: i
+m2 i
+m3 i
