@@ -23,9 +23,12 @@ class Pitch:
         assert all('#' == x for x in self.accidental) or all('-' == x for x in self.accidental)\
             , f'Invalid accidental: {self.accidental}'
         self.diatonic = self.diatonic_dict[self.name_without_accidental]
+        if self.accidental:
+            accidental_number = len(self.accidental) * (1 if self.accidental[0] == '#' else -1)
+        else:
+            accidental_number = 0
         self.chromatic = (self.chromatic_dict[self.name_without_accidental] +
-                          sum(x=='#' for x in self.accidental) -
-                          sum(x=='-' for x in self.accidental) ) %12
+                          accidental_number ) %12
 
     @multimethod
     def __init__(self, diatonic:int, chromatic:int):
@@ -81,7 +84,7 @@ class Quality:
     """
     Class that represents a chord quality and the score of each note in the chord
     """
-    def __init__(self, label:str, name:str, score_dict:dict):
+    def __init__(self, label:str='NO', name:str='NO', score_dict:dict={}):
         self.label = label
         self.score_dict = score_dict
         self.name = name
@@ -101,6 +104,7 @@ class Qualities:
         self.name_to_idx = {quality.label: i for i, quality in enumerate(self.quality_list)}
         self.pitch_beam = self.__compute_pitch_beat() #pitch -> [(root, quality) of the chord]
         self.chord_array = self.__compute_chord_array() #diatonic, chromatic, quality_idx -> chord
+        self.len = len(self.quality_list)
 
     def __getitem__(self,label):
         if isinstance(label,int):
@@ -156,7 +160,7 @@ class RomanNumeralFigure:
     def get_label(self):
         ''' Converts the figure into a label '''
         label = self.figure
-        if self.quality in ['m','o', 'm7', 'o7', 'o/7']:
+        if self.quality in ['m','o', 'm7', 'o7', 'ø7']:
             label = label.lower()
         if self.quality in ['M','m','It','Ger','Fr']:
             quality = ''

@@ -1,11 +1,9 @@
 """ Module for the RomanText class """
-
 from fractions import Fraction
 import music21
-import numpy as np
 from src.tonal_graph import TonalGraph
 from src.utils import display_float
-from src.music_theory_classes import Pitch
+from src.music_theory_classes import Pitch, Quality
 
 class RomanText:
     """ Class for the roman text representation of an analysis """
@@ -20,7 +18,8 @@ class RomanText:
     def from_tonal_graph(cls, tonal_graph:TonalGraph):
         """ Creates a roman text from a tonal graph"""
         roman_text = cls()
-        roman_text.rn_list = []
+        roman_text.rn_list = [RomanNumeral.from_tonal_graph_node(tonal_graph, node['id'])
+                              for node in tonal_graph.shortest_path]
         roman_text.qualities = tonal_graph.qualities
         roman_text.mode_list = tonal_graph.mode_list
         roman_text.duration_divisor = tonal_graph.duration_divisor
@@ -33,9 +32,8 @@ class RomanText:
         current_chord = (0,0,0,0)
         current_measure = -1
         current_time_sig = ''
-        for node in tonal_graph.shortest_path:
-            rn = RomanNumeral.from_tonal_graph_node(tonal_graph, node['id'])
-            roman_text.rn_list.append(rn)
+        for i, node in enumerate(tonal_graph.shortest_path):
+            rn = roman_text.rn_list[i]
             real_onset = Fraction(node['onset'],tonal_graph.duration_divisor)
             measure, beat = tonal_graph.rt.note_graph.score.onset_to_measure_and_beat(real_onset)
             time_sig = tonal_graph.rt.note_graph.score.onset_to_ts(real_onset).ratioString
@@ -47,11 +45,11 @@ class RomanText:
                 current_time_sig = time_sig
             if measure_label != current_measure:
                 text += f'\nm{measure_label} '
-            if current_tonality != f"{pitch}{node['mode']}":
-                text += f"{str(pitch).upper() if node['mode']=='M' else str(pitch).lower()}: "
             if current_chord != repr(rn):
                 text += f"b{beat} " if beat != "1" else ""
                 text += f"{rn.full_name} "
+            if current_tonality != f"{pitch}{node['mode']}":
+                text += f"{str(pitch).upper() if node['mode']=='M' else str(pitch).lower()}: "
             current_tonality = f'{pitch}{node["mode"]}'
             current_measure = measure_label
             current_chord = repr(rn)
@@ -74,26 +72,25 @@ class RomanText:
         m21_rntxt = music21.converter.parse(file_path, format="romantext")
         m21_rntxt = m21_rntxt.recurse().stream()
         m21_rntxt = m21_rntxt.getElementsByClass(music21.roman.RomanNumeral).stream()
+        m21_rntxt = [RomanNumeral.from_music21_rn(untonicize(rn), self.qualities, self.mode_list)
+                     for rn in m21_rntxt]
         self_idx = 0
         m21_idx = 0
         accuracy = 0
         while True:
             self_rn = self.rn_list[self_idx]
             m21_rn = m21_rntxt[m21_idx]
-            m21_rn = untonicize(m21_rn)
-            m21_rn = RomanNumeral.from_music21_rn(m21_rn)
-            m21_idx += 1
+            if self_rn == m21_rn:
+                accuracy += float(min(self_rn.duration, m21_rn.duration))
 
-            # if True:
-            #     accuracy += min(self_rn['duration']/self.duration_divisor,m21_rn.quarterLength)
-            # if self_idx + 1 >= len(self.rn_list) or m21_idx + 1 >= len(m21_rntxt) :
-            #     break
-            # next_rn_onset = self.rn_list[self_idx + 1].onset
-            # next_m21_onset = m21_rntxt[m21_idx + 1].offset
-            # if next_rn_onset <= next_m21_onset:
-            #     self_idx += 1
-            # if next_rn_onset >= next_m21_onset:
-            #     m21_idx += 1
+            if self_idx + 1 >= len(self.rn_list) or m21_idx + 1 >= len(m21_rntxt) :
+                break
+            next_rn_onset = self.rn_list[self_idx + 1].onset
+            next_m21_onset = m21_rntxt[m21_idx + 1].onset
+            if next_rn_onset <= next_m21_onset:
+                self_idx += 1
+            if next_rn_onset >= next_m21_onset:
+                m21_idx += 1
 
         return accuracy / (self_rn.onset + self_rn.duration)
 
@@ -108,22 +105,32 @@ class RomanNumeral:
         self.key_tonic = key_tonic              # D
         self.mode = mode                        # minor
         self.full_name = self.get_full_name()   # viio/65
-        self.full_name_with_key = repr(self)    # viio/65 in D minor
+        self.full_name_with_key = self.get_full_name_with_key()    # viio/65 in D minor
         self.onset = onset                      # Fraction in quarter length
         self.duration = duration                # Fraction in quarter length
 
     def get_full_name(self):
         """ Returns the full name of the roman numeral"""
         if self.quality.cardinality == 3:
-            tg_inversion_name = ['','6','65'][self.inversion]
+            tg_inversion_name = ['','6','64'][self.inversion]
             full_name = self.figure + tg_inversion_name
         elif self.quality.cardinality  == 4:
             tg_inversion_name = ['7','65','43','2'][self.inversion]
             full_name = self.figure.replace('7',tg_inversion_name)
+        else:
+            full_name = 'NO'
         return full_name
 
-    def __repr__(self):
+    def get_full_name_with_key(self):
+        """ Returns the full name of the roman numeral with the key"""
         return f'{self.full_name} in {self.key_tonic} {"major" if self.mode=="M" else "minor"}'
+
+    def __repr__(self):
+        return self.full_name_with_key
+
+    def __eq__(self, other):
+        key = ('figure', 'key_tonic', 'mode')
+        return all(getattr(self, k) == getattr(other, k) for k in key)
 
     @classmethod
     def from_tonal_graph_node(cls, tonal_graph:TonalGraph, node_idx:int):
@@ -141,9 +148,31 @@ class RomanNumeral:
         return cls(degree, figure, quality, inversion, key_tonic, node['mode'], onset, duration)
 
     @classmethod
-    def from_music21_rn(cls, rn:music21.roman.RomanNumeral):
+    def from_music21_rn(cls, rn:music21.roman.RomanNumeral, qualities, mode_list):
         """Transforms a music21 roman numeral into a RomanNumeral object"""
+        onset = Fraction(rn.offset)
+        duration = Fraction(rn.quarterLength)
+        key_tonic = Pitch(rn.key.tonic.name)
+        mode = 'M' if rn.key.mode=='major' else 'm'
+        mode = [x for x in mode_list if x.name == mode][0]
         degree = ['I','II','III','IV','V','VI','VII'][rn.scaleDegree-1]
+        try:
+            quality = [qualities[q.quality] for q in mode.roman_numeral_list
+                       if qualities[q.quality].name == rn.commonName][0]
+            if rn.figure in ['bII','N','Nap']:
+                figure = [r for r in mode.roman_numeral_list
+                          if r.figure == 'N'][0].label
+            elif rn.romanNumeral in ['Fr','Ger','It']:
+                figure = [r for r in mode.roman_numeral_list
+                          if r.figure == rn.romanNumeral][0].label
+            else:
+                figure = [r for r in mode.roman_numeral_list
+                          if r.quality == quality.label and r.figure == degree][0].label
+        except IndexError:
+            return cls(degree, 'NO', Quality(), rn.inversion(),
+                       key_tonic, mode.name, onset, duration)
+
+        return cls(degree, figure, quality, rn.inversion(), key_tonic, mode.name, onset, duration)
 
 
 

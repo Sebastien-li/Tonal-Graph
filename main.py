@@ -3,62 +3,68 @@
 from pathlib import Path
 from time import time
 
-from src.music_theory_objects import qualities, major_mode, minor_mode
+from src.music_theory_objects import qualities, major_mode, minor_mode, transitions
 from src.note_graph import NoteGraph, Music21Score
 from src.rhythm_tree import RhythmTree, RhythmTreeAnalyzed
 from src.tonal_graph import TonalGraph
 from src.roman_text import RomanText
+from src.utils import get_multilogger
 
-data_path = Path('data')
-mxl_list = list(data_path.glob('*/*/score.mxl'))[1:2]
-overall_accuracy = 0
-len_mxl_list_with_accuracy = 0
-for file in mxl_list:
-    composer, title = file.parts[-3:-1]
-    print(f'Analyzing {composer} - {title} ...')
-    t0 = time()
+def main():
+    """ Analyze all the musicXML files in the data folder."""
+    logger = get_multilogger()
+    mxl_list = list(Path('data').glob('*/*/score.mxl'))
+    mxl_list = mxl_list
+    overall_accuracy = 0
+    overall_len = 0
+    for file in mxl_list:
+        composer, title = file.parts[-3:-1]
+        logger.info('Analyzing %s - %s ...', composer, title)
 
-    # Load the music21 score
-    score = Music21Score(file, composer, title)
-    #print(f'File loaded with music21 in {time()-t0:.2f} seconds')
-    t1 = time()
+        # Load the music21 score
+        t0 = time()
+        score = Music21Score(file, composer, title)
+        logger.debug('File loaded with music21 in %.2f seconds', time()-t0)
 
-    # Create the note graph
-    note_graph = NoteGraph.from_m21score(score)
-    t2 = time()
-    #print(f'Note graph created in {t2-t1:.2f} seconds')
+        # Create the note graph
+        t = time()
+        note_graph = NoteGraph.from_m21score(score)
+        logger.debug('Note graph created in %.2f seconds', time()-t)
 
-    # Create the rhythm tree
-    rhythm_tree = RhythmTree.construct_tree(note_graph)
-    t3 = time()
-    #print(f'Rhythm tree created in {t3-t2:.2f} seconds')
+        # Create the rhythm tree
+        t = time()
+        rhythm_tree = RhythmTree.construct_tree(note_graph)
+        logger.debug('Rhythm tree created in %.2f seconds', time()-t)
 
-    # Analyze the rhythm tree
-    rhythm_tree_analyzed = RhythmTreeAnalyzed(rhythm_tree, qualities)
-    t4 = time()
-    #print(f'Rhythm tree analyzed in {t4-t3:.2f} seconds')
+        # Analyze the rhythm tree
+        t = time()
+        rhythm_tree_analyzed = RhythmTreeAnalyzed(rhythm_tree, qualities)
+        logger.debug('Rhythm tree analyzed in %.2f seconds', time()-t)
 
-    # Create the tonal graph
-    tonal_graph = TonalGraph(rhythm_tree_analyzed, [major_mode, minor_mode])
-    t5 = time()
-    #print(f'Tonal graph created in {t5-t4:.2f} seconds')
+        # Create the tonal graph
+        t = time()
+        tonal_graph = TonalGraph(rhythm_tree_analyzed,
+                                [major_mode, minor_mode],
+                                transitions=transitions)
+        logger.debug('Tonal graph created in %.2f seconds', time()-t)
 
-    # Create the roman text
-    roman_text = RomanText.from_tonal_graph(tonal_graph)
-    roman_text.save(file.parent / 'analysis_generated.txt')
-    if (file.parent / 'analysis.txt').exists():
-        accuracy = roman_text.compare(file.parent / 'analysis.txt')
-        overall_accuracy += accuracy
-        len_mxl_list_with_accuracy += 1
-        print(f'Accuracy: {100*accuracy:.2f}%')
-    else:
-        print('Ground truth roman text not provided, skipping accuracy calculation')
-    t6 = time()
-    #print(f'Roman text created and saved in {t6-t5:.2f} seconds')
+        # Create the roman text
+        t = time()
+        roman_text = RomanText.from_tonal_graph(tonal_graph)
+        roman_text.save(file.parent / 'analysis_generated.txt')
+        if (file.parent / 'analysis.txt').exists():
+            accuracy = roman_text.compare(file.parent / 'analysis.txt')
+            overall_accuracy += accuracy
+            overall_len += 1
+            logger.info('Accuracy: %.2f%%', 100*accuracy)
+        else:
+            logger.info('Ground truth roman text not provided, skipping accuracy calculation')
+        logger.debug('Roman Numeral created and saved in %.2f seconds', time()-t)
 
-    print(f'Analysis of {composer} - {title} completed in {t6-t0:.2f} seconds')
-    print()
+        logger.info('Completed in %.2f seconds', time()-t0)
 
-if len_mxl_list_with_accuracy > 0:
-    print(f'Overall accuracy: {100*overall_accuracy/len_mxl_list_with_accuracy:.2f}%')
+    if overall_len > 0:
+        logger.info('Overall accuracy: %.2f%%', 100*overall_accuracy/overall_len)
 
+if __name__ == '__main__':
+    main()

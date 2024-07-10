@@ -16,7 +16,7 @@ class Music21Score:
         self.composer = composer
         self.title = title
         self.load_path = Path(load_path)
-        self.score_m21 = music21.converter.parse(self.load_path)
+        self.score_m21 = music21.converter.parse(self.load_path, forceSource=True)
         self.recursed = self.score_m21.recurse().stream()
 
         self.notes = sorted(list(self.recursed.notes), key=lambda x: x.offset)
@@ -344,11 +344,11 @@ class NoteGraph(Graph):
             out_nodes = out_nodes[np.logical_and(out_edges_attr['type'] != 'onset',
                                                  ~out_nodes['isRest'])]
 
-            if len(inc_nodes)==0:
+            if inc_nodes.size==0:
                 is_leap.append(False)
                 continue
 
-            if len(out_edg_idx)==0:
+            if out_edg_idx.size==0:
                 is_leap.append(False)
                 continue
 
@@ -365,7 +365,7 @@ class NoteGraph(Graph):
             is_leap.append(prev_interval > 1 and next_interval > 1)
 
         new_dtype = self.dtype_nodes + [('isLeap', bool)]
-        nodes = np.zeros(len(self.nodes), dtype = new_dtype)
+        nodes = np.zeros_like(self.nodes, dtype = new_dtype)
         for name,_ in self.dtype_nodes:
             nodes[name] = self.nodes[name]
         nodes['isLeap'] = is_leap

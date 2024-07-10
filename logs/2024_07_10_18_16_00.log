@@ -1,0 +1,46 @@
+2024-07-10 18:16:00,088 [INFO] Analyzing Beethoven, Ludwig van - 7 Variations on God Save the King in C Major, B078 ...
+2024-07-10 18:16:01,224 [DEBUG] File loaded with music21 in 1.14 seconds
+2024-07-10 18:16:01,699 [DEBUG] Note graph created in 0.48 seconds
+2024-07-10 18:16:01,875 [DEBUG] Rhythm tree created in 0.18 seconds
+2024-07-10 18:16:03,205 [DEBUG] Rhythm tree analyzed in 1.33 seconds
+2024-07-10 18:16:04,044 [DEBUG] Tonal graph created in 0.84 seconds
+2024-07-10 18:16:04,096 [INFO] Accuracy: 83.33%
+2024-07-10 18:16:04,097 [DEBUG] Roman Numeral created and saved in 0.05 seconds
+2024-07-10 18:16:04,098 [INFO] Completed in 4.01 seconds
+2024-07-10 18:16:04,098 [INFO] Analyzing Chopin, Frédéric - Prelude Op. 28 No. 20 in c minor ...
+2024-07-10 18:16:04,171 [DEBUG] File loaded with music21 in 0.07 seconds
+2024-07-10 18:16:04,207 [DEBUG] Note graph created in 0.04 seconds
+2024-07-10 18:16:04,211 [DEBUG] Rhythm tree created in 0.00 seconds
+2024-07-10 18:16:04,295 [DEBUG] Rhythm tree analyzed in 0.08 seconds
+2024-07-10 18:16:04,353 [DEBUG] Tonal graph created in 0.06 seconds
+2024-07-10 18:16:04,390 [INFO] Accuracy: 66.67%
+2024-07-10 18:16:04,390 [DEBUG] Roman Numeral created and saved in 0.04 seconds
+2024-07-10 18:16:04,390 [INFO] Completed in 0.29 seconds
+2024-07-10 18:16:04,391 [INFO] Analyzing Franz, Schubert - Impromptu Op. 90 No. 2 ...
+2024-07-10 18:16:05,235 [DEBUG] File loaded with music21 in 0.84 seconds
+2024-07-10 18:16:05,443 [DEBUG] Note graph created in 0.21 seconds
+2024-07-10 18:16:05,500 [DEBUG] Rhythm tree created in 0.06 seconds
+2024-07-10 18:16:06,005 [DEBUG] Rhythm tree analyzed in 0.51 seconds
+2024-07-10 18:16:06,317 [DEBUG] Tonal graph created in 0.31 seconds
+2024-07-10 18:16:06,474 [INFO] Accuracy: 47.76%
+2024-07-10 18:16:06,474 [DEBUG] Roman Numeral created and saved in 0.16 seconds
+2024-07-10 18:16:06,474 [INFO] Completed in 2.08 seconds
+2024-07-10 18:16:06,474 [INFO] Analyzing Franz, Schubert - Schwanengesang - No.4 Ständchen ...
+2024-07-10 18:16:06,869 [DEBUG] File loaded with music21 in 0.39 seconds
+2024-07-10 18:16:07,029 [DEBUG] Note graph created in 0.16 seconds
+2024-07-10 18:16:07,056 [DEBUG] Rhythm tree created in 0.03 seconds
+2024-07-10 18:16:07,530 [DEBUG] Rhythm tree analyzed in 0.47 seconds
+2024-07-10 18:16:07,669 [DEBUG] Tonal graph created in 0.14 seconds
+2024-07-10 18:16:07,812 [INFO] Accuracy: 78.95%
+2024-07-10 18:16:07,812 [DEBUG] Roman Numeral created and saved in 0.14 seconds
+2024-07-10 18:16:07,812 [INFO] Completed in 1.34 seconds
+2024-07-10 18:16:07,812 [INFO] Analyzing Hensel, Fanny - 3 Lieder - No.1 Sehnsucht ...
+2024-07-10 18:16:07,938 [DEBUG] File loaded with music21 in 0.13 seconds
+2024-07-10 18:16:07,974 [DEBUG] Note graph created in 0.04 seconds
+2024-07-10 18:16:07,980 [DEBUG] Rhythm tree created in 0.01 seconds
+2024-07-10 18:16:08,157 [DEBUG] Rhythm tree analyzed in 0.18 seconds
+2024-07-10 18:16:08,254 [DEBUG] Tonal graph created in 0.10 seconds
+2024-07-10 18:16:08,298 [INFO] Accuracy: 70.31%
+2024-07-10 18:16:08,298 [DEBUG] Roman Numeral created and saved in 0.04 seconds
+2024-07-10 18:16:08,298 [INFO] Completed in 0.49 seconds
+2024-07-10 18:16:08,298 [INFO] Overall accuracy: 69.40%

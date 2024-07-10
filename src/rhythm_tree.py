@@ -8,11 +8,11 @@ import numpy as np
 from src.music_theory_classes import Pitch
 from src.utils import display_float, interval_collision, interval_in
 
-def get_subdivision(duration:Fraction, beat_ql:Fraction):
+def get_subdivision(duration:Fraction, beat_ql:Fraction, minimum_subdivision=0.5):
     """ Returns the subdivision of a duration given a beat quarter length"""
     duration = Fraction(duration)
     beat_ql = Fraction(beat_ql)
-    if duration <= 0.5:
+    if duration <= minimum_subdivision:
         return None
     if duration%3 == 0:
         duration = beat_ql * duration/3
@@ -26,13 +26,15 @@ def get_subdivision(duration:Fraction, beat_ql:Fraction):
 
 class RhythmTree:
     """ A tree structure that represents the possible rhythm segmentations of a piece of music"""
-    def __init__(self, note_graph, onset, subdivision, duration, parent, measure_idx, depth = 0):
+    def __init__(self, note_graph, onset, subdivision, duration, parent, measure_idx, depth = 0,
+                 minimum_subdivision = 0.5):
         self.note_graph = note_graph
         self.onset = int(onset)
         self.duration = int(duration)
         self.offset = self.onset + self.duration
         self.duration_divisor = note_graph.duration_divisor
         self.subdivision = subdivision
+        self.minimum_subdivision = minimum_subdivision
         self.parent = parent
         self.children = []
         self.measure_idx = measure_idx
@@ -49,9 +51,10 @@ class RhythmTree:
         self.remove_duplicates()
 
     def __str__(self):
+        duration_display = [display_float(Fraction(x,self.duration_divisor)) for x in self.onsets]
         return f"onset = {Fraction(self.onset,self.duration_divisor)}, " \
                f"subdivision={self.subdivision}, " \
-               f"onsets=[{', '.join([display_float(Fraction(x,self.duration_divisor)) for x in self.onsets])}]"
+               f"onsets=[{', '.join(duration_display)}]"
 
     def __repr__(self):
         return f"RhythmTreeNode(onset={Fraction(self.onset,self.duration_divisor)}, " \
@@ -78,7 +81,8 @@ class RhythmTree:
     def subdivide(self):
         """ Subdivides the tree into smaller segments according to the subdivision"""
         new_subdivision = get_subdivision(self.subdivision,
-                                          Fraction(self.ts.beatDuration.quarterLength))
+                                          Fraction(self.ts.beatDuration.quarterLength),
+                                          self.minimum_subdivision)
         if new_subdivision is None:
             return
 
@@ -94,7 +98,8 @@ class RhythmTree:
                                duration=checkpoint_next-checkpoint ,
                                parent=self,
                                measure_idx=self.measure_idx,
-                               depth=self.depth+1)
+                               depth=self.depth+1,
+                               minimum_subdivision=self.minimum_subdivision)
             self.add_child(child)
 
     def depth_first_search(self):
@@ -117,9 +122,10 @@ class RhythmTree:
             return pickle.load(f)
 
     @classmethod
-    def construct_tree(cls, note_graph):
+    def construct_tree(cls, note_graph, **kwargs):
         """Constructs a rhythm tree from a note graph"""
-        onset_max = (note_graph.score.measure_list[-1][0] + note_graph.score.measure_list[-1][2])*note_graph.duration_divisor
+        last_measure = note_graph.score.measure_list[-1]
+        onset_max = (last_measure[0] + last_measure[2])*note_graph.duration_divisor
         root = RhythmTree(note_graph, 0, None, onset_max, None, 0)
         for i,(measure_onset, _, measure_duration) in enumerate(note_graph.score.measure_list):
             child = RhythmTree(note_graph=note_graph,
@@ -128,7 +134,8 @@ class RhythmTree:
                                duration = measure_duration*root.duration_divisor,
                                parent = root,
                                measure_idx=i,
-                               depth=1)
+                               depth=1,
+                               **kwargs)
             root.add_child(child)
         return root
 
@@ -164,13 +171,15 @@ class RhythmTreeAnalyzed(RhythmTree):
             return self.children[0].note_graph_selected_nodes
         where = np.logical_and(self.onset < self.note_graph.nodes['offset'],
                             self.offset > self.note_graph.nodes['onset'])
-        return self.note_graph.nodes[where]
+        selected_nodes = self.note_graph.nodes[where]
+        return selected_nodes[~selected_nodes['isRest']]
 
     def analyze(self):
         """ Analyzes the tree and returns the root score for each node (before leap and onset)"""
-        root_score = np.zeros((7,12,len(self.qualities)))
-        inversion = np.zeros((7,12,len(self.qualities)), dtype=np.int32)
-        if self.parent is None:
+        root_score = np.zeros((7,12,self.qualities.len))
+        inversion = np.zeros((7,12,self.qualities.len), dtype=np.int32)
+        selected_nodes = np.sort(self.note_graph_selected_nodes,order='pitch_space')
+        if self.parent is None or selected_nodes.size == 0:
             return root_score, inversion
         if len(self.children) == 1 :
             return self.children[0].root_score
@@ -195,18 +204,20 @@ class RhythmTreeAnalyzed(RhythmTree):
             return intersected_duration / self.duration
 
         vertices = {} # {pitch : [(octave, duration), ...] }
-        for node in self.note_graph_selected_nodes:
+
+        for node in selected_nodes:
             diatonic = int(node['pitch_diatonic'])
             chromatic = int(node['pitch_chromatic'])
             pitch = Pitch(diatonic, chromatic)
             if pitch not in vertices:
                 vertices[pitch] = []
             vertices[pitch].append((node['pitch_octave'], get_relative_duration(node)))
-
         for pitch, otave_duration_list in vertices.items():
-            min_octave = min([octave for octave, _ in otave_duration_list])
-            sum_duration = min(1,sum([duration for _, duration in otave_duration_list]))
-            pitch_weight = octave_weight(min_octave) * duration_weight(sum_duration) * doubling_weight(len(otave_duration_list))
+            min_octave = min(octave for octave, _ in otave_duration_list)
+            sum_duration = min(1,sum(duration for _, duration in otave_duration_list))
+            pitch_weight =  octave_weight(min_octave) * \
+                            duration_weight(sum_duration) * \
+                            doubling_weight(len(otave_duration_list))
             chords = self.qualities.pitch_beam[pitch]
             for (root,quality,chord_score) in chords:
                 diatonic, chromatic = root.diatonic, root.chromatic
@@ -220,9 +231,11 @@ class RhythmTreeAnalyzed(RhythmTree):
             notes = self.qualities.chord_array[diatonic_root, chromatic_root, quality_idx]
             union = set(vertices).union(set(notes))
             intersection = set(vertices).intersection(set(notes))
-            low_notes = [(x,x.chromatic+12*min(vertices[x], key=lambda x:x[0])[0]) for x in intersection]
+            low_notes = [(x,x.chromatic+12*min(vertices[x], key=lambda x:x[0])[0])
+                         for x in intersection]
             lowest_note = min(low_notes, key=lambda x:x[1])[0]
-            inversion[diatonic_root, chromatic_root, quality_idx] = list(notes.keys()).index(lowest_note)
+            list_notes = list(notes.keys())
+            inversion[diatonic_root, chromatic_root, quality_idx] = list_notes.index(lowest_note)
             root_score[diatonic_root, chromatic_root, quality_idx] /= len(union)
 
         return root_score, inversion
@@ -261,7 +274,7 @@ class RhythmTreeAnalyzed(RhythmTree):
 
     def analyze_leap(self):
         """ Creates the root filter of the leap analysis"""
-        root_score_leap = np.zeros((7,12,len(self.qualities)))
+        root_score_leap = np.zeros((7,12,self.qualities.len))
         list_chords = []
         for note_node in self.note_graph_selected_nodes[self.note_graph_selected_nodes['isLeap']]:
             diatonic = int(note_node['pitch_diatonic'])
@@ -270,8 +283,8 @@ class RhythmTreeAnalyzed(RhythmTree):
             chords = self.qualities.pitch_beam[pitch]
             list_chords.append(set((root,quality) for root,quality,_ in chords))
 
-        if not(list_chords):
-            return np.ones((7,12,len(self.qualities)))
+        if not list_chords:
+            return np.ones((7,12,self.qualities.len))
 
         chord_intersection = set.intersection(*list_chords)
 
