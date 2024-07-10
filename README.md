@@ -1,0 +1,19 @@
+# Tonal Graph Harmonic Analyzer 
+
+This algorithm offers an automatic analysis for Roman numerals.
+
+## Installation
+
+Get started by installing the necessary requirements:
+
+```bash
+pip install -r requirements.txt
+```
+
+## Usage
+### Analysis
+To perform an analysis on all .mxl files in the data folder. To analyze your own pieces create a new .mxl file in 'data/{COMPOSER}/{TITLE}/score.mxl. You can also provide a romantext file to compare the results.
+
+```bash
+python -m main
+```
