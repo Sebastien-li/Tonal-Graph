@@ -3,9 +3,25 @@
 This algorithm offers an automatic analysis for Roman numerals.
 
 ## Installation
+Get started by cloning the repository: 
+```bash
+git clone https://github.com/Sebastien-li/Tonal-Graph-Analyzer-Light
+cd Tonal-Graph-Analyzer-Light
+```
 
-Get started by installing the necessary requirements:
-
+Get started by creating a virtual environment.
+```bash
+python -m venv venv
+```
+Windows:
+```bash
+venv/Scripts/activate.bat
+```
+Linux / MacOS:
+```bash
+source venv/bin/activate
+```
+Install the necessary requirements:
 ```bash
 pip install -r requirements.txt
 ```
