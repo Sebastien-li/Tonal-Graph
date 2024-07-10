@@ -3,7 +3,8 @@
 This algorithm offers an automatic analysis for Roman numerals.
 
 ## Installation
-This algorithm requires Python 3.10 or 3.11
+This algorithm requires Python 3.10 or 3.11.
+
 Get started by cloning the repository: 
 ```bash
 git clone https://github.com/Sebastien-li/Tonal-Graph-Analyzer-Light
