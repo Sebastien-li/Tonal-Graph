@@ -1,4 +1,4 @@
-""" RhthmTree class with functions to construct and analyze it """
+""" RhytmTree class with functions to construct and analyze it """
 
 from fractions import Fraction
 from pathlib import Path
