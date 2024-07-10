@@ -9,7 +9,7 @@ git clone https://github.com/Sebastien-li/Tonal-Graph-Analyzer-Light
 cd Tonal-Graph-Analyzer-Light
 ```
 
-Get started by creating a virtual environment.
+Create a virtual environment.
 ```bash
 python -m venv venv
 ```
