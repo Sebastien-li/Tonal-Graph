@@ -31,8 +31,7 @@ pip install -r requirements.txt
 ```
 
 ## Usage
-### Analysis
-To perform an analysis on all .mxl files in the data folder. 
+### Perform an analysis on all .mxl files in the data folder
 
 To analyze your pieces, create a new .mxl file *data/{COMPOSER}/{TITLE}/score.mxl*. 
 
