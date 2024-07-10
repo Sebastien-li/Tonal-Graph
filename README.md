@@ -19,7 +19,7 @@ Activate the virtual environment.
 
 Windows:
 ```bash
-venv/Scripts/activate.bat
+"venv/Scripts/activate.bat"
 ```
 Linux / MacOS:
 ```bash
