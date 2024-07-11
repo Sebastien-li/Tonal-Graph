@@ -40,10 +40,9 @@ You can also provide a romantext file *data/{COMPOSER}/{TITLE}/analysis.txt* to 
 
 ### Perform a visualization of the analysis
 
-To visualize the analysis on your pieces, create a new directory *assets/scores/{COMPOSER}/{TITLE}*. Then, add the files: score.mxl, image.png, analysis.txt (Optional)
+For plotting performance reasons, the scores should not be stored in the same directory as the global analysis. To visualize the analysis on your pieces, create a new directory *assets/scores/{COMPOSER}/{TITLE}*. Then, add the files: score.mxl, image.png, analysis.txt (Romantext optional)
 
 > [!WARNING]
-> For plotting performance reasons, the scores should not be stored in the same directory as the global analysis.
 > Please use relatively small pieces (<50 measures) or extract only the desired part.
 ```bash
 python -m app
