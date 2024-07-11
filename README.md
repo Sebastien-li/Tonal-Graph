@@ -38,6 +38,13 @@ To analyze your pieces, create a new .mxl file *data/{COMPOSER}/{TITLE}/score.mx
 
 You can also provide a romantext file *data/{COMPOSER}/{TITLE}/analysis.txt* to compare the results.
 
+### Perform a visualization of the analysis
+
+To visualize the analysis on your pieces, create a new directory *assets/scores/{COMPOSER}/{TITLE}*. Then, add the files: score.mxl, image.png, analysis.txt (Optional)
+
+For plotting performance reasons, please use relatively small pieces (<50 measures) or extract only the desired part.
+
 ```bash
-python -m main
+python -m app
 ```
+Then click on [this](http://127.0.0.1:8050/).
