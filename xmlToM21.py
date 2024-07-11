@@ -1,3 +1,6 @@
+# DIFFERENT VERSION FOR TONAL GRAPH ANALYSIS.
+# Please copy this file to venv/Lib/site-packages/music21/musicxml/xmlToM21.py
+
 # -*- coding: utf-8 -*-
 # ------------------------------------------------------------------------------
 # Name:         musicxml/xmlToM21.py

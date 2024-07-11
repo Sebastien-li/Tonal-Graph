@@ -11,7 +11,6 @@ from src.rhythm_tree import RhythmTreeAnalyzed
 from src.music_theory_classes import Pitch, Interval
 from src.tonality_distance import get_tonality_distance
 from src.utils import cartesian_product
-from src.transition import Transition
 
 class TonalGraph:
     """ Class for the tonal graph"""
@@ -134,11 +133,9 @@ class TonalGraph:
         key_distance = self.tonality_distances[diatonic_interval,chromatic_interval,mode_distance]
         key_distance[key_distance!=0]+=1
         transition_hashkey = reduce(np.char.add, [u['label'],u['mode'],v['label'],v['mode']])
-        transition_weight = np.vectorize(self.transitions.get)(transition_hashkey)
-        transition_weight = np.nan_to_num(transition_weight.astype(float))
-        edge_weight = (u['weight'] + v['weight'])/2
-        edge_weight += key_distance * 0.05
-        edge_weight *= 1 - 0.1*transition_weight
+        transition_w = np.vectorize(self.transitions.get)(transition_hashkey)
+        transition_w = np.nan_to_num(transition_w.astype(float))
+        edge_weight = ((u['weight'] + v['weight'])/2 + key_distance * 0.05) * (1 + 0.1*transition_w)
         edge_attr = edge_weight.astype(self.edge_attr_dtype)
         edge_attr['selected'] = False
         return edge_attr

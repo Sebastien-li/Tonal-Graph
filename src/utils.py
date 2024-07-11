@@ -5,6 +5,7 @@ from pathlib import Path
 import logging as log
 import bisect
 import numpy as np
+from dash import html
 
 
 def find_le(a, x, key = None):
@@ -54,3 +55,12 @@ def get_multilogger():
     handler_info.setFormatter(formater)
     logger.addHandler(handler_info)
     return logger
+
+def to_html_text(text):
+    """ Converts \n to html.Br"""
+    output_text = []
+    for line in text.split('\n'):
+        output_text.append(line)
+        output_text.append(html.Br())
+    return output_text
+

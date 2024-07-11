@@ -125,7 +125,7 @@ class RhythmTree:
     def construct_tree(cls, note_graph, **kwargs):
         """Constructs a rhythm tree from a note graph"""
         last_measure = note_graph.score.measure_list[-1]
-        onset_max = (last_measure[0] + last_measure[2])*note_graph.duration_divisor
+        onset_max = (last_measure.onset + last_measure.duration)*note_graph.duration_divisor
         root = RhythmTree(note_graph, 0, None, onset_max, None, 0)
         for i,(measure_onset, _, measure_duration) in enumerate(note_graph.score.measure_list):
             child = RhythmTree(note_graph=note_graph,
@@ -230,12 +230,12 @@ class RhythmTreeAnalyzed(RhythmTree):
         for diatonic_root, chromatic_root, quality_idx in np.argwhere(root_score):
             notes = self.qualities.chord_array[diatonic_root, chromatic_root, quality_idx]
             union = set(vertices).union(set(notes))
-            intersection = set(vertices).intersection(set(notes))
-            low_notes = [(x,x.chromatic+12*min(vertices[x], key=lambda x:x[0])[0])
-                         for x in intersection]
-            lowest_note = min(low_notes, key=lambda x:x[1])[0]
-            list_notes = list(notes.keys())
-            inversion[diatonic_root, chromatic_root, quality_idx] = list_notes.index(lowest_note)
+            list_notes = [(x.diatonic,x.chromatic) for x in notes.keys()]
+            for node in selected_nodes:
+                node_pc = (node['pitch_diatonic'], node['pitch_chromatic'])
+                if node_pc in list_notes:
+                    inversion[diatonic_root, chromatic_root, quality_idx] = list_notes.index(node_pc)
+                    break
             root_score[diatonic_root, chromatic_root, quality_idx] /= len(union)
 
         return root_score, inversion

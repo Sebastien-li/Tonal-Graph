@@ -93,6 +93,18 @@ class Quality:
     def __repr__(self):
         return f'{self.label}'
 
+    def label_with_inversion(self, inversion):
+        """ Returns the label of the chord with the inversion"""
+        if self.cardinality == 3:
+            inversion_name = ['','6','64'][inversion]
+            full_name = self.label + inversion_name
+        elif self.cardinality  == 4:
+            inversion_name = ['7','65','43','2'][inversion]
+            full_name = self.label.replace('7',inversion_name)
+        else:
+            full_name = 'NO'
+        return full_name
+
 class Qualities:
     """
     Class that represents a collection of qualities

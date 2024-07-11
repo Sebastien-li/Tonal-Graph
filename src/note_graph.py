@@ -1,5 +1,5 @@
 """ This module contains the classes Music21Score and NoteGraph."""
-
+from collections import namedtuple
 from pathlib import Path
 import pickle
 from fractions import Fraction
@@ -16,7 +16,7 @@ class Music21Score:
         self.composer = composer
         self.title = title
         self.load_path = Path(load_path)
-        self.score_m21 = music21.converter.parse(self.load_path, forceSource=True)
+        self.score_m21 = music21.converter.parse(self.load_path)
         self.recursed = self.score_m21.recurse().stream()
 
         self.notes = sorted(list(self.recursed.notes), key=lambda x: x.offset)
@@ -34,12 +34,14 @@ class Music21Score:
 
 
     def _get_measures(self):
+        Measure = namedtuple('Measure', ['onset', 'number', 'duration'])
         measure_list = []
         for meas in sorted(self.recursed.getElementsByClass('Measure'), key=lambda x: x.offset):
-            if measure_list and measure_list[-1][0] == meas.offset:
+            if measure_list and measure_list[-1].onset == meas.offset:
                 continue
-            measure_list.append((Fraction(meas.offset),meas.measureNumberWithSuffix(),
-                                 Fraction(meas.duration.quarterLength)))
+            measure = Measure(Fraction(meas.offset), meas.measureNumberWithSuffix(),
+                                Fraction(meas.duration.quarterLength))
+            measure_list.append(measure)
         return measure_list
 
     def _get_timesig(self):
@@ -59,7 +61,7 @@ class Music21Score:
         list_timesig_by_measure = []
         i_timesig = 0
         for meas in self.measure_list:
-            if i_timesig < len(self.ts_list)-1 and self.ts_list[i_timesig+1].offset <= meas[0]:
+            if i_timesig < len(self.ts_list)-1 and self.ts_list[i_timesig+1].offset <= meas.onset:
                 i_timesig += 1
             list_timesig_by_measure.append(self.ts_list[i_timesig])
         return list_timesig_by_measure
@@ -70,7 +72,7 @@ class Music21Score:
 
     def onset_to_measure(self, onset):
         """ Return the measure at onset (fraction)."""
-        return find_le(self.measure_list, onset, key=lambda x: x[0])
+        return find_le(self.measure_list, onset, key=lambda x: x.onset)
 
     def onset_to_ts(self, onset):
         """ Return the time signature at onset (fraction) """
@@ -248,7 +250,7 @@ class NoteGraph(Graph):
                 edge_index.append((u['id'],v['id']))
                 edge_attr.append((edge_type))
         for u in nodes:#tqdm(nodes, desc='Creating edges'):
-            v_onset = nodes[nodes['onset'] == u['offset']]
+            v_onset = nodes[nodes['onset'] == u['onset']]
             for v in v_onset:
                 append_edge(u, v, edge_index, edge_attr, 'onset')
 

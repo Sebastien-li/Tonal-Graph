@@ -16,6 +16,8 @@ def main():
     mxl_list = list(Path('data').glob('*/*/score.mxl'))
     mxl_list = mxl_list
     overall_accuracy = 0
+    overall_degree_accuracy = 0
+    overall_key_accuracy = 0
     overall_len = 0
     for file in mxl_list:
         composer, title = file.parts[-3:-1]
@@ -53,10 +55,15 @@ def main():
         roman_text = RomanText.from_tonal_graph(tonal_graph)
         roman_text.save(file.parent / 'analysis_generated.txt')
         if (file.parent / 'analysis.txt').exists():
-            accuracy = roman_text.compare(file.parent / 'analysis.txt')
+            m21_roman_text = RomanText.from_rntxt(file.parent/'analysis.txt')
+            accuracy, key_accuracy, key_degree_accuracy = roman_text.compare(m21_roman_text)
             overall_accuracy += accuracy
+            overall_degree_accuracy += key_degree_accuracy
+            overall_key_accuracy += key_accuracy
             overall_len += 1
-            logger.info('Accuracy: %.2f%%', 100*accuracy)
+            logger.info('Key accuracy: %.2f%%', 100*key_accuracy)
+            logger.info('Degree accuracy: %.2f%%', 100*key_degree_accuracy)
+            logger.info('Quality accuracy: %.2f%%', 100*accuracy)
         else:
             logger.info('Ground truth roman text not provided, skipping accuracy calculation')
         logger.debug('Roman Numeral created and saved in %.2f seconds', time()-t)
@@ -64,7 +71,9 @@ def main():
         logger.info('Completed in %.2f seconds', time()-t0)
 
     if overall_len > 0:
-        logger.info('Overall accuracy: %.2f%%', 100*overall_accuracy/overall_len)
+        logger.info('Key accuracy: %.2f%%', 100*overall_key_accuracy/overall_len)
+        logger.info('Degree accuracy: %.2f%%', 100*overall_degree_accuracy/overall_len)
+        logger.info('Overall quality accuracy: %.2f%%', 100*overall_accuracy/overall_len)
 
 if __name__ == '__main__':
     main()

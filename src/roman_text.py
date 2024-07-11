@@ -4,15 +4,28 @@ import music21
 from src.tonal_graph import TonalGraph
 from src.utils import display_float
 from src.music_theory_classes import Pitch, Quality
+from src.music_theory_objects import major_mode, minor_mode, qualities
 
 class RomanText:
     """ Class for the roman text representation of an analysis """
-    def __init__(self, qualities=None, mode_list=None):
+    def __init__(self):
         self.text = ''
         self.rn_list = []
-        self.duration_divisor = 1
-        self.qualities = qualities
-        self.mode_list = mode_list
+        self.where_wrong_key = []
+        self.where_wrong_degree = []
+        self.where_wrong_quality = []
+
+    @classmethod
+    def from_rntxt(cls, file_path):
+        """ Creates a roman text from a rntxt file """
+        rtxt = music21.converter.parse(file_path, format="romantext")
+        rtxt = rtxt.recurse().stream().getElementsByClass(music21.roman.RomanNumeral).stream()
+        roman_text = cls()
+        with open(file_path, 'r', encoding='utf-8') as f:
+            roman_text.text = f.read()
+        roman_text.rn_list = [RomanNumeral.from_music21_rn(untonicize(rn),
+                                qualities, [major_mode, minor_mode]) for rn in rtxt]
+        return roman_text
 
     @classmethod
     def from_tonal_graph(cls, tonal_graph:TonalGraph):
@@ -20,9 +33,6 @@ class RomanText:
         roman_text = cls()
         roman_text.rn_list = [RomanNumeral.from_tonal_graph_node(tonal_graph, node['id'])
                               for node in tonal_graph.shortest_path]
-        roman_text.qualities = tonal_graph.qualities
-        roman_text.mode_list = tonal_graph.mode_list
-        roman_text.duration_divisor = tonal_graph.duration_divisor
 
         text = f'Composer: {tonal_graph.rt.note_graph.score.composer}'\
                f'\nTitle: {tonal_graph.rt.note_graph.score.title}'\
@@ -45,11 +55,12 @@ class RomanText:
                 current_time_sig = time_sig
             if measure_label != current_measure:
                 text += f'\nm{measure_label} '
+            if current_tonality != f"{pitch}{node['mode']}":
+                text += f"{str(pitch).upper() if node['mode']=='M' else str(pitch).lower()}: "
             if current_chord != repr(rn):
                 text += f"b{beat} " if beat != "1" else ""
                 text += f"{rn.full_name} "
-            if current_tonality != f"{pitch}{node['mode']}":
-                text += f"{str(pitch).upper() if node['mode']=='M' else str(pitch).lower()}: "
+
             current_tonality = f'{pitch}{node["mode"]}'
             current_measure = measure_label
             current_chord = repr(rn)
@@ -67,32 +78,43 @@ class RomanText:
         with open(file_path, 'w', encoding='utf-8') as f:
             f.write(self.text)
 
-    def compare(self, file_path):
-        """ Compare with a rntxt file """
-        m21_rntxt = music21.converter.parse(file_path, format="romantext")
-        m21_rntxt = m21_rntxt.recurse().stream()
-        m21_rntxt = m21_rntxt.getElementsByClass(music21.roman.RomanNumeral).stream()
-        m21_rntxt = [RomanNumeral.from_music21_rn(untonicize(rn), self.qualities, self.mode_list)
-                     for rn in m21_rntxt]
+    def compare(self, other):
+        """ Compare with another roman text """
         self_idx = 0
         m21_idx = 0
         accuracy = 0
+        key_degree_accuracy = 0
+        key_accuracy = 0
         while True:
             self_rn = self.rn_list[self_idx]
-            m21_rn = m21_rntxt[m21_idx]
-            if self_rn == m21_rn:
-                accuracy += float(min(self_rn.duration, m21_rn.duration))
-
-            if self_idx + 1 >= len(self.rn_list) or m21_idx + 1 >= len(m21_rntxt) :
+            m21_rn = other.rn_list[m21_idx]
+            onset = float(max(self_rn.onset, m21_rn.onset))
+            duration = float(min(self_rn.duration, m21_rn.duration))
+            if (self_rn.key_tonic, self_rn.mode) != (m21_rn.key_tonic, m21_rn.mode):
+                self.where_wrong_key.append((onset, duration))
+            elif self_rn.degree != m21_rn.degree:
+                self.where_wrong_degree.append((onset, duration))
+                key_accuracy += duration
+            elif self_rn.quality != m21_rn.quality:
+                self.where_wrong_quality.append((onset, duration))
+                key_accuracy += duration
+                key_degree_accuracy += duration
+            else:
+                accuracy += duration
+                key_accuracy += duration
+                key_degree_accuracy += duration
+            if self_idx + 1 >= len(self.rn_list) or m21_idx + 1 >= len(other.rn_list) :
                 break
             next_rn_onset = self.rn_list[self_idx + 1].onset
-            next_m21_onset = m21_rntxt[m21_idx + 1].onset
+            next_m21_onset = other.rn_list[m21_idx + 1].onset
             if next_rn_onset <= next_m21_onset:
                 self_idx += 1
             if next_rn_onset >= next_m21_onset:
                 m21_idx += 1
-
-        return accuracy / (self_rn.onset + self_rn.duration)
+        accuracy /= self_rn.onset + self_rn.duration
+        key_accuracy /= self_rn.onset + self_rn.duration
+        key_degree_accuracy /= self_rn.onset + self_rn.duration
+        return accuracy, key_accuracy, key_degree_accuracy
 
 class RomanNumeral:
     """ Class for a roman numeral with the inversion and the key"""
@@ -104,8 +126,9 @@ class RomanNumeral:
         self.inversion = inversion              # 1
         self.key_tonic = key_tonic              # D
         self.mode = mode                        # minor
+        self.key_tonic_disp = str(key_tonic).upper() if mode == 'M' else str(key_tonic).lower() # d
         self.full_name = self.get_full_name()   # viio/65
-        self.full_name_with_key = self.get_full_name_with_key()    # viio/65 in D minor
+        self.full_name_with_key = self.get_full_name_with_key()    # d: viio/65
         self.onset = onset                      # Fraction in quarter length
         self.duration = duration                # Fraction in quarter length
 
@@ -123,7 +146,7 @@ class RomanNumeral:
 
     def get_full_name_with_key(self):
         """ Returns the full name of the roman numeral with the key"""
-        return f'{self.full_name} in {self.key_tonic} {"major" if self.mode=="M" else "minor"}'
+        return f'{self.key_tonic_disp}: {self.full_name}'
 
     def __repr__(self):
         return self.full_name_with_key
@@ -181,4 +204,5 @@ def untonicize(rn: music21.roman.RomanNumeral):
     if rn.secondaryRomanNumeral is None:
         return rn
     new_key = rn.secondaryRomanNumeralKey
-    return music21.roman.RomanNumeral(rn.primaryFigure, new_key)
+    return music21.roman.RomanNumeral(rn.primaryFigure, new_key,
+                                      offset = rn.offset, quarterLength = rn.quarterLength)
