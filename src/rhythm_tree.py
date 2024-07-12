@@ -6,7 +6,7 @@ import pickle
 from functools import lru_cache, reduce
 import numpy as np
 from src.music_theory_classes import Pitch
-from src.utils import display_float, interval_collision, interval_in
+from src.utils import display_float, interval_collision, interval_in, get_relative_duration, octave_weight, duration_weight, doubling_weight
 
 def get_subdivision(duration:Fraction, beat_ql:Fraction, minimum_subdivision=0.5):
     """ Returns the subdivision of a duration given a beat quarter length"""
@@ -184,25 +184,6 @@ class RhythmTreeAnalyzed(RhythmTree):
         if len(self.children) == 1 :
             return self.children[0].root_score
 
-        def octave_weight(octave):
-            # 1 / (1 + e^(octave-6))
-            return [0.997, 0.993, 0.982, 0.952, 0.880, 0.731, 0.5, 0.268, 0.119, 0.047][octave]
-
-        def duration_weight(duration):
-            return duration ** 0.5
-
-        def doubling_weight(nb_double):
-            # sqrt(nb_double/3) or 1
-            if nb_double == 1:
-                return 0.577
-            if nb_double == 2:
-                return 0.816
-            return 1
-
-        def get_relative_duration(node):
-            intersected_duration = min(self.offset, node['offset']) - max(self.onset, node['onset'])
-            return intersected_duration / self.duration
-
         vertices = {} # {pitch : [(octave, duration), ...] }
 
         for node in selected_nodes:
@@ -211,7 +192,7 @@ class RhythmTreeAnalyzed(RhythmTree):
             pitch = Pitch(diatonic, chromatic)
             if pitch not in vertices:
                 vertices[pitch] = []
-            vertices[pitch].append((node['pitch_octave'], get_relative_duration(node)))
+            vertices[pitch].append((node['pitch_octave'], get_relative_duration(self, node)))
         for pitch, otave_duration_list in vertices.items():
             min_octave = min(octave for octave, _ in otave_duration_list)
             sum_duration = min(1,sum(duration for _, duration in otave_duration_list))

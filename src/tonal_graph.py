@@ -86,7 +86,7 @@ class TonalGraph:
                 for roman_numeral, mode in possible_rn:
                     diatonic_root = int(roman_numeral.diatonic_root)
                     chromatic_root = int(roman_numeral.chromatic_root)
-                    to_tonic = Interval(Pitch(diatonic_root, chromatic_root),Pitch(0,0))
+                    to_tonic = Interval.from_pitches(Pitch(diatonic_root, chromatic_root),Pitch(0,0))
                     tonic = Pitch(int(diatonic), int(chromatic)) + to_tonic
                     nodes.append((i,
                                   rt_i,
@@ -135,7 +135,7 @@ class TonalGraph:
         transition_hashkey = reduce(np.char.add, [u['label'],u['mode'],v['label'],v['mode']])
         transition_w = np.vectorize(self.transitions.get)(transition_hashkey)
         transition_w = np.nan_to_num(transition_w.astype(float))
-        edge_weight = ((u['weight'] + v['weight'])/2 + key_distance * 0.05) * (1 + 0.1*transition_w)
+        edge_weight = ((u['weight'] + v['weight'])/2 + key_distance * 0.05) * (1 - 0.1*transition_w)
         edge_attr = edge_weight.astype(self.edge_attr_dtype)
         edge_attr['selected'] = False
         return edge_attr

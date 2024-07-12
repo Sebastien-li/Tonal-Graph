@@ -4,7 +4,7 @@ class Transition:
     def __init__(self, rn1, rn2, score:float=0):
         self.rn1_label, self.rn1_mode = rn1
         self.rn2_label, self.rn2_mode = rn2
-        self.score = score
+        self.score = float(score)
 
     def __repr__(self):
         return f'{self.rn1_label} -> {self.rn2_label}: {self.score}'

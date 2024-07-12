@@ -32,14 +32,15 @@ pip install -r requirements.txt
 Replace the version of xmlToM21.py by copying the provided file to *venv/Lib/site-packages/music21/musicxml*
 
 ## Usage
-### Perform an analysis on all .mxl files in the data folder
+### Perform an analysis on .mxl files in the data folder
 
 To analyze your pieces, create a new .mxl file *data/{COMPOSER}/{TITLE}/score.mxl*.
 
 You can also provide a romantext file *data/{COMPOSER}/{TITLE}/analysis.txt* to compare the results.
 
 ```bash
-python -m main
+python -m main # Analyze all the files in the data folder
+python -m main -p 'path/to/score.mxl' # Analyze only one specific mxl file.
 ```
 
 ### Perform a visualization of the analysis

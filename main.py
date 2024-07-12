@@ -1,5 +1,5 @@
 """ Main script for the project. Will analyze all the musicXML files in the data folder."""
-
+from argparse import ArgumentParser
 from pathlib import Path
 from time import time
 
@@ -10,17 +10,20 @@ from src.tonal_graph import TonalGraph
 from src.roman_text import RomanText
 from src.utils import get_multilogger
 
-def main():
-    """ Analyze all the musicXML files in the data folder."""
+def main(mxl_list):
+    """ Analyze all the musicXML files in the list."""
     logger = get_multilogger()
-    mxl_list = list(Path('data').glob('*/*/score.mxl'))
-    mxl_list = mxl_list
     overall_accuracy = 0
     overall_degree_accuracy = 0
     overall_key_accuracy = 0
     overall_len = 0
+    start_total = time()
     for file in mxl_list:
-        composer, title = file.parts[-3:-1]
+        try:
+            composer, title = file.parts[-3:-1]
+        except ValueError:
+            composer, title = 'Unknown', file.stem
+            logger.warning('Could not extract composer and title from %s', file)
         logger.info('Analyzing %s - %s ...', composer, title)
 
         # Load the music21 score
@@ -70,10 +73,21 @@ def main():
 
         logger.info('Completed in %.2f seconds', time()-t0)
 
-    if overall_len > 0:
-        logger.info('Key accuracy: %.2f%%', 100*overall_key_accuracy/overall_len)
-        logger.info('Degree accuracy: %.2f%%', 100*overall_degree_accuracy/overall_len)
+    if overall_len > 1:
+        logger.info('Overall results:')
+        logger.info('Overall key accuracy: %.2f%%', 100*overall_key_accuracy/overall_len)
+        logger.info('Overall degree accuracy: %.2f%%', 100*overall_degree_accuracy/overall_len)
         logger.info('Overall quality accuracy: %.2f%%', 100*overall_accuracy/overall_len)
+        logger.info('Total time: %.2f seconds', time()-start_total)
 
 if __name__ == '__main__':
-    main()
+    # Parse the arguments
+    parser = ArgumentParser(description='Analyze musicXML files')
+    parser.add_argument('-p', '--piece', type=str,help='Analyze a specific piece')
+
+    args = parser.parse_args()
+    if args.piece:
+        mxl_path_list = [Path(args.piece)]
+    else:
+        mxl_path_list = list(Path('data').glob('*/*/score.mxl'))
+    main(mxl_path_list)

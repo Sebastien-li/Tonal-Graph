@@ -13,9 +13,9 @@ m6 iiø43
 m7 V7 
 m8 i 
 m9 V b2 V7 
-m10 i 
+m10 F: vi 
 m11 
-m12 F: viiø43 
+m12 viiø43 
 m13 V7 
 m14 I 
 m15 V b2 V7 b3 ii7 b3.5 V 
@@ -46,8 +46,8 @@ m39
 m40 
 m41 V b2 V7 b: b3 viio b3.5 iio 
 m42 V65 b2 V2 
-m43 i 
-m44 iv64 b1.5 iiø2 D: b2 ii43 b3 ii64 
+m43 D: vi 
+m44 ii64 b1.5 viiø2 b2 ii43 b3 ii64 
 m45 vi 
 m46 IV 
 m47 I 
@@ -55,8 +55,8 @@ m48 V7 b2 viiø7 b2.5 ii b3 viiø65
 m49 I 
 m50 d: i 
 m51 iio6 
-m52 D: V7 
-m53 I 
+m52 V7 
+m53 D: I 
 m54 iv64 
 m55 I 
 m56 V7 

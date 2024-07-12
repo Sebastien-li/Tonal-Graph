@@ -85,11 +85,13 @@ class RomanText:
         accuracy = 0
         key_degree_accuracy = 0
         key_accuracy = 0
+        duration_sum = 0
         while True:
             self_rn = self.rn_list[self_idx]
             m21_rn = other.rn_list[m21_idx]
             onset = float(max(self_rn.onset, m21_rn.onset))
             duration = float(min(self_rn.duration, m21_rn.duration))
+            duration_sum += duration
             if (self_rn.key_tonic, self_rn.mode) != (m21_rn.key_tonic, m21_rn.mode):
                 self.where_wrong_key.append((onset, duration))
             elif self_rn.degree != m21_rn.degree:
@@ -111,9 +113,9 @@ class RomanText:
                 self_idx += 1
             if next_rn_onset >= next_m21_onset:
                 m21_idx += 1
-        accuracy /= self_rn.onset + self_rn.duration
-        key_accuracy /= self_rn.onset + self_rn.duration
-        key_degree_accuracy /= self_rn.onset + self_rn.duration
+        accuracy /= duration_sum
+        key_accuracy /= duration_sum
+        key_degree_accuracy /= duration_sum
         return accuracy, key_accuracy, key_degree_accuracy
 
 class RomanNumeral:
@@ -175,7 +177,7 @@ class RomanNumeral:
         """Transforms a music21 roman numeral into a RomanNumeral object"""
         onset = Fraction(rn.offset)
         duration = Fraction(rn.quarterLength)
-        key_tonic = Pitch(rn.key.tonic.name)
+        key_tonic = Pitch.from_name(rn.key.tonic.name)
         mode = 'M' if rn.key.mode=='major' else 'm'
         mode = [x for x in mode_list if x.name == mode][0]
         degree = ['I','II','III','IV','V','VI','VII'][rn.scaleDegree-1]

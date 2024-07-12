@@ -3,7 +3,6 @@ Contains the classes for the music theory objects
 """
 
 import numpy as np
-from multimethod import multimethod
 
 class Pitch:
     """
@@ -13,24 +12,6 @@ class Pitch:
     diatonic_dict = {note: i for i, note in enumerate(note_names)}
     chromatic_dict = {'C':0, 'D':2, 'E':4, 'F':5, 'G':7, 'A':9, 'B':11}
 
-    @multimethod
-    def __init__(self, name:str):
-        name = ''.join([x for x in name if not x.isdigit()])
-        self.name = name
-        self.name_without_accidental = name[0]
-        self.accidental = name[1:].replace('b','-')
-        assert self.name_without_accidental in self.diatonic_dict, f'Invalid note name: {name}'
-        assert all('#' == x for x in self.accidental) or all('-' == x for x in self.accidental)\
-            , f'Invalid accidental: {self.accidental}'
-        self.diatonic = self.diatonic_dict[self.name_without_accidental]
-        if self.accidental:
-            accidental_number = len(self.accidental) * (1 if self.accidental[0] == '#' else -1)
-        else:
-            accidental_number = 0
-        self.chromatic = (self.chromatic_dict[self.name_without_accidental] +
-                          accidental_number ) %12
-
-    @multimethod
     def __init__(self, diatonic:int, chromatic:int):
         self.diatonic = diatonic%7
         self.chromatic = chromatic%12
@@ -41,6 +22,25 @@ class Pitch:
         else:
             self.accidental = '-' * (12-accidental_number)
         self.name = self.name_without_accidental + self.accidental
+
+    @classmethod
+    def from_name(cls, name:str):
+        """ Creates a pitch from a note name"""
+        name = ''.join([x for x in name if not x.isdigit()])
+        name_without_accidental = name[0]
+        accidental = name[1:].replace('b','-')
+        assert name_without_accidental in cls.diatonic_dict, f'Invalid note name: {name}'
+        assert all('#' == x for x in accidental) or all('-' == x for x in accidental)\
+            , f'Invalid accidental: {accidental}'
+        diatonic = cls.diatonic_dict[name_without_accidental]
+        if accidental:
+            accidental_number = len(accidental) * (1 if accidental[0] == '#' else -1)
+        else:
+            accidental_number = 0
+        chromatic = (cls.chromatic_dict[name_without_accidental] +
+                          accidental_number ) %12
+
+        return cls(diatonic, chromatic)
 
     def __repr__(self):
         return f'{self.name}'
@@ -60,16 +60,18 @@ class Interval:
     """
     Class that represents an interval in the diatonic / chromatic space
     """
-    @multimethod
-    def __init__(self, pitch_start:Pitch, pitch_end:Pitch ):
-        self.diatonic = (pitch_end.diatonic - pitch_start.diatonic)%7
-        self.chromatic = (pitch_end.chromatic - pitch_start.chromatic)%12
-        self.interval_number = self.diatonic + 1
-    @multimethod
+
     def __init__(self, diatonic:int, chromatic:int):
         self.diatonic = diatonic
         self.chromatic = chromatic
         self.interval_number = self.diatonic + 1
+
+    @classmethod
+    def from_pitches(cls, pitch_start:Pitch, pitch_end:Pitch ):
+        """ Creates an interval from two pitches"""
+        diatonic = (pitch_end.diatonic - pitch_start.diatonic)%7
+        chromatic = (pitch_end.chromatic - pitch_start.chromatic)%12
+        return cls(diatonic, chromatic)
 
     def __repr__(self):
         return f'({self.diatonic}, {self.chromatic})'
@@ -84,11 +86,11 @@ class Quality:
     """
     Class that represents a chord quality and the score of each note in the chord
     """
-    def __init__(self, label:str='NO', name:str='NO', score_dict:dict={}):
+    def __init__(self, label:str='NO', name:str='NO', score_dict:dict=None):
         self.label = label
         self.score_dict = score_dict
         self.name = name
-        self.cardinality = len(score_dict)
+        self.cardinality = len(score_dict if score_dict else {})
 
     def __repr__(self):
         return f'{self.label}'
@@ -141,7 +143,8 @@ class Qualities:
                 for root_chromatic in range(12):
                     root = Pitch(root_diatonic, root_chromatic)
                     for interval_note_name, score in quality.score_dict.items():
-                        interval = Interval(Pitch(interval_note_name),Pitch('C'))
+                        interval = Interval.from_pitches(Pitch.from_name(interval_note_name),
+                                                         Pitch.from_name('C'))
                         if root not in pitch_beam:
                             pitch_beam[root] = []
                         pitch_beam[root].append((root+interval,quality_label,score))
@@ -152,7 +155,7 @@ class Qualities:
         for root_diatonic in range(7):
             for root_chromatic in range(12):
                 for quality_idx, (_, quality) in enumerate(self):
-                    chord = {Pitch(note)+Interval(root_diatonic,root_chromatic): score
+                    chord = {Pitch.from_name(note)+Interval(root_diatonic,root_chromatic): score
                              for note,score in quality.score_dict.items()}
                     chord_array[root_diatonic, root_chromatic, quality_idx] = chord
         return chord_array
