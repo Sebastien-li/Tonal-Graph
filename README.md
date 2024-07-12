@@ -1,6 +1,6 @@
 # Tonal Graph Harmonic Analyzer
 
-This algorithm offers an automatic analysis for Roman numerals.
+This algorithm offers an automatic analysis tool for Roman numerals.
 
 ## Installation
 This algorithm requires Python 3.10 or 3.11.
