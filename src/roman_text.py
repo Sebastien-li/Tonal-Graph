@@ -1,6 +1,7 @@
 """ Module for the RomanText class """
 from fractions import Fraction
 import music21
+import pandas as pd
 from src.tonal_graph import TonalGraph
 from src.utils import display_float
 from src.music_theory_classes import Pitch, Quality
@@ -25,6 +26,37 @@ class RomanText:
             roman_text.text = f.read()
         roman_text.rn_list = [RomanNumeral.from_music21_rn(untonicize(rn),
                                 qualities, [major_mode, minor_mode]) for rn in rtxt]
+        return roman_text
+
+    @classmethod
+    def from_csv(cls, file_path):
+        """ Creates a roman text from a csv file """
+        df = pd.read_csv(file_path).dropna(subset=['offset'])
+        roman_text = cls()
+        previous_rn = df.iloc[0]["RomanNumeral31"]
+        previous_key = df.iloc[0]["TonicizedKey38"]
+        current_offset = 0
+        for row in df.iterrows():
+            if row[1]["RomanNumeral31"] != previous_rn or row[1]["TonicizedKey38"] != previous_key:
+                music21_rn = music21.roman.RomanNumeral(
+                    previous_rn.replace('Cad','I64'),
+                    previous_key,
+                    offset=current_offset,
+                    quarterLength= row[1]["offset"] - current_offset)
+                music21_rn = untonicize(music21_rn)
+                rn = RomanNumeral.from_music21_rn(music21_rn, qualities, [major_mode, minor_mode])
+                roman_text.rn_list.append(rn)
+                current_offset = row[1]["offset"]
+            previous_rn = row[1]["RomanNumeral31"]
+            previous_key = row[1]["TonicizedKey38"]
+
+        music21_rn = music21.roman.RomanNumeral(
+            previous_rn.replace('Cad','I64'),
+            previous_key,
+            offset=current_offset,
+            quarterLength= df.iloc[-1]["offset"] - current_offset)
+        rn = RomanNumeral.from_music21_rn(music21_rn, qualities, [major_mode, minor_mode])
+        roman_text.rn_list.append(rn)
         return roman_text
 
     @classmethod
@@ -87,6 +119,8 @@ class RomanText:
         key_accuracy = 0
         duration_sum = 0
         while True:
+            if self_idx >= len(self.rn_list) or m21_idx >= len(other.rn_list) :
+                break
             self_rn = self.rn_list[self_idx]
             m21_rn = other.rn_list[m21_idx]
             onset = float(max(self_rn.onset, m21_rn.onset))
@@ -105,10 +139,8 @@ class RomanText:
                 accuracy += duration
                 key_accuracy += duration
                 key_degree_accuracy += duration
-            if self_idx + 1 >= len(self.rn_list) or m21_idx + 1 >= len(other.rn_list) :
-                break
-            next_rn_onset = self.rn_list[self_idx + 1].onset
-            next_m21_onset = other.rn_list[m21_idx + 1].onset
+            next_rn_onset = self.rn_list[self_idx + 1].onset if self_idx + 1 < len(self.rn_list) else self.rn_list[self_idx].onset + self.rn_list[self_idx].duration
+            next_m21_onset = other.rn_list[m21_idx + 1].onset if m21_idx + 1 < len(other.rn_list) else other.rn_list[m21_idx].onset + other.rn_list[m21_idx].duration
             if next_rn_onset <= next_m21_onset:
                 self_idx += 1
             if next_rn_onset >= next_m21_onset:

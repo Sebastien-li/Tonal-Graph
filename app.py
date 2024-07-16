@@ -26,9 +26,12 @@ def analyze(dir_path):
                             transitions=transitions)
     roman_text = RomanText.from_tonal_graph(tonal_graph)
     m21_roman_text = None
+    augnet_roman_text = None
     if (dir_path/'analysis.txt').exists():
         m21_roman_text = RomanText.from_rntxt(dir_path/'analysis.txt')
-    return note_graph, rhythm_tree_analyzed, tonal_graph, roman_text, m21_roman_text
+    if (dir_path/'score_annotated.csv').exists():
+        augnet_roman_text = RomanText.from_csv(dir_path/'score_annotated.csv')
+    return note_graph, rhythm_tree_analyzed, tonal_graph, roman_text, m21_roman_text, augnet_roman_text
 
 def main():
     """ Main function for the app."""
@@ -37,7 +40,7 @@ def main():
     for dir_path in tqdm(dir_path_list, desc=f'Analyzing {len(dir_path_list)} examples'):
         composer, title = dir_path.parts[-2:]
         composer_and_title = f'{composer} : {title}'
-        note_graph, rhythm_tree, tonal_graph, roman_text, m21_roman_text = analyze(dir_path)
+        note_graph, rhythm_tree, tonal_graph, roman_text, m21_roman_text, augnet_roman_text = analyze(dir_path)
         analysis_dict[composer_and_title] = {
             'dir_path': dir_path,
             'descr' : composer_and_title,
@@ -45,7 +48,8 @@ def main():
             'rhythm_tree': rhythm_tree,
             'tonal_graph': tonal_graph,
             'roman_text': roman_text,
-            'm21_roman_text': m21_roman_text}
+            'm21_roman_text': m21_roman_text,
+            'augnet_roman_text': augnet_roman_text}
 
     app = Dash(__name__)
     app.title = 'Tonal Graph Analyzer'

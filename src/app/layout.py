@@ -1,5 +1,4 @@
 from dash import dcc, html, dash_table
-from src.music_theory_objects import qualities
 
 invisible_style = {'display':'none'}
 visible_style = {'display':'block'}
@@ -19,10 +18,14 @@ def get_layout(analysis_dict):
             dcc.Graph(id='roman_graph_content',figure={}),
             html.Div(id='romantext_container', children = [
                 html.Div(id='romantext_generated',
-                         style = {'display':'inline-block', 'width':'50%'}),
+                         style = {'display':'inline-block', 'width':'33%'}),
                 html.Div(id='romantext_m21',
-                         style = {'display':'inline-block', 'width':'50%'}),
+                         style = {'display':'inline-block', 'width':'33%'}),
+                html.Div(id='romantext_augnet',
+                         style = {'display':'inline-block', 'width':'33%'}),
             ]),
+            html.H4('AugmentedNet analysis:'),
+            dash_table.DataTable(id='augnet_table', page_size=10,),
             dcc.Graph(id='time_graph_content',figure={}),
         ], id = 'score_information_container', style = {'width':'100%'}),
 

@@ -324,7 +324,7 @@ def plot_time_graph(note_graph, rhythm_tree, tonal_graph, selected_idx=None,xmin
 
     return fig
 
-def plot_roman_graph(score, roman_text, m21_roman_text=None):
+def plot_roman_graph(score, roman_text, m21_roman_text=None, augnet_roman_text=None):
     """ Create a plotly figure with the roman text """
     fig = go.Figure()
     fig.update_layout(
@@ -335,11 +335,13 @@ def plot_roman_graph(score, roman_text, m21_roman_text=None):
     # xmax = float(last_measure.onset + last_measure.duration) + 0.2
     fig.update_xaxes(tickvals = [float(x.onset) for x in score.measure_list],
                      ticktext = [x.number for x in score.measure_list])
-    fig.update_yaxes(range = [-1,3],
-                     tickvals = [0,1,2],
-                     ticktext = ['Generated analysis',
-                                 'Analysis comparison',
-                                 'Ground truth analysis'],
+    fig.update_yaxes(range = [-1,5],
+                     tickvals = [0,1,2,3,4],
+                     ticktext = ['Tonal Graph analysis',
+                                 'Tonal Graph comparison',
+                                 'Ground truth analysis',
+                                 'AugmentedNet comparison',
+                                 'AugmentedNet analysis'],
                      showgrid = False, zeroline = False,)
     text_x = []
     text_y = []
@@ -365,14 +367,26 @@ def plot_roman_graph(score, roman_text, m21_roman_text=None):
             opacity=0.5,
             showlegend=False))
 
-    meas = score.measure_list[len(score.measure_list)-1]
+    togra_offset = float(roman_text.rn_list[-1].onset + roman_text.rn_list[-1].duration)
+    m21_offset = float(m21_roman_text.rn_list[-1].onset + m21_roman_text.rn_list[-1].duration)
+    augnet_offset = float(augnet_roman_text.rn_list[-1].onset + augnet_roman_text.rn_list[-1].duration)
+
     fig.add_trace(go.Scatter(
-        x = (float(score.measure_list[0].onset), float(meas.onset + meas.duration)),
+        x = (0, min(togra_offset,m21_offset,augnet_offset)),
         y = (1,1),
         mode='lines',
         line={'color':color_palette['light_green'], "width":10},
         hoverinfo='skip',
         showlegend=True,
+        name = "Correct analysis"
+        ))
+    fig.add_trace(go.Scatter(
+        x = (0, min(augnet_offset,m21_offset)),
+        y = (3,3),
+        mode='lines',
+        line={'color':color_palette['light_green'], "width":10},
+        hoverinfo='skip',
+        showlegend=False,
         name = "Correct analysis"
         ))
 
@@ -434,27 +448,105 @@ def plot_roman_graph(score, roman_text, m21_roman_text=None):
         ))
 
 
-    if m21_roman_text is not None:
-        for rn in m21_roman_text.rn_list:
-            x0 = float(rn.onset)
-            x1 = float(rn.onset + rn.duration)-0.2
-            y0 = 1.5
-            y1 = 2.5
-            rn_text = '<br>'.join(rn.full_name_with_key.split(': '))
-            text.append(rn_text)
-            text_x.append((x0+x1)/2)
-            text_y.append(2)
-            fig.add_trace(go.Scatter(
-                x = [x0,x1,x1,x0,x0,None],
-                y = [y0,y0,y1,y1,y0,None],
-                fill='toself',
-                fillcolor=color_palette['light_blue'],
-                hoverinfo='text',
-                text = rn.full_name_with_key,
-                mode='lines',
-                line={'color':color_palette['light_blue']},
-                opacity=0.5,
-                showlegend=False))
+    false_x = []
+    false_y = []
+    for onset,duration in augnet_roman_text.where_wrong_key:
+        false_x.append(float(onset))
+        false_x.append(float(onset+duration))
+        false_x.append(None)
+        false_y.append(3)
+        false_y.append(3)
+        false_y.append(None)
+    fig.add_trace(go.Scatter(
+        x = false_x,
+        y = false_y,
+        mode='lines',
+        line={'color':color_palette['red'], "width":10},
+        hoverinfo='skip',
+        showlegend=True,
+        name = "Wrong key"
+        ))
+
+    false_x = []
+    false_y = []
+    for onset,duration in augnet_roman_text.where_wrong_degree:
+        false_x.append(float(onset))
+        false_x.append(float(onset+duration))
+        false_x.append(None)
+        false_y.append(3)
+        false_y.append(3)
+        false_y.append(None)
+    fig.add_trace(go.Scatter(
+        x = false_x,
+        y = false_y,
+        mode='lines',
+        line={'color':color_palette['orange'], "width":10},
+        hoverinfo='skip',
+        showlegend=False,
+        name = "Wrong degree"
+        ))
+
+    false_x = []
+    false_y = []
+    for onset,duration in augnet_roman_text.where_wrong_quality:
+        false_x.append(float(onset))
+        false_x.append(float(onset+duration))
+        false_x.append(None)
+        false_y.append(3)
+        false_y.append(3)
+        false_y.append(None)
+    fig.add_trace(go.Scatter(
+        x = false_x,
+        y = false_y,
+        mode='lines',
+        line={'color':color_palette['yellow'], "width":10},
+        hoverinfo='skip',
+        showlegend=False,
+        name = "Wrong quality"
+        ))
+
+    for rn in m21_roman_text.rn_list:
+        x0 = float(rn.onset)
+        x1 = float(rn.onset + rn.duration)-0.2
+        y0 = 1.5
+        y1 = 2.5
+        rn_text = '<br>'.join(rn.full_name_with_key.split(': '))
+        text.append(rn_text)
+        text_x.append((x0+x1)/2)
+        text_y.append(2)
+        fig.add_trace(go.Scatter(
+            x = [x0,x1,x1,x0,x0,None],
+            y = [y0,y0,y1,y1,y0,None],
+            fill='toself',
+            fillcolor=color_palette['light_blue'],
+            hoverinfo='text',
+            text = rn.full_name_with_key,
+            mode='lines',
+            line={'color':color_palette['light_blue']},
+            opacity=0.5,
+            showlegend=False))
+
+    for rn in augnet_roman_text.rn_list:
+        x0 = float(rn.onset)
+        x1 = float(rn.onset + rn.duration)-0.2
+        y0 = 3.5
+        y1 = 4.5
+        rn_text = '<br>'.join(rn.full_name_with_key.split(': '))
+        text.append(rn_text)
+        text_x.append((x0+x1)/2)
+        text_y.append(4)
+        fig.add_trace(go.Scatter(
+            x = [x0,x1,x1,x0,x0,None],
+            y = [y0,y0,y1,y1,y0,None],
+            fill='toself',
+            fillcolor=color_palette['orange'],
+            hoverinfo='text',
+            text = rn.full_name_with_key,
+            mode='lines',
+            line={'color':color_palette['orange']},
+            opacity=0.5,
+            showlegend=False))
+
     fig.add_trace(go.Scatter(
         x=text_x,
         y=text_y,
@@ -469,6 +561,8 @@ def plot_roman_graph(score, roman_text, m21_roman_text=None):
         showlegend=True,
         name = 'Click here to hide/show the roman numerals',
         ))
+
+
     return fig
 
 def plot_root_cloud(rhythm_tree_node, collapse_by = 'Quality', marker_size=100):
