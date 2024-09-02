@@ -1,5 +1,6 @@
 """ Module for the RomanText class """
 from fractions import Fraction
+import pickle
 import music21
 import pandas as pd
 from src.tonal_graph import TonalGraph
@@ -15,6 +16,13 @@ class RomanText:
         self.where_wrong_key = []
         self.where_wrong_degree = []
         self.where_wrong_quality = []
+
+    @classmethod
+    def from_pickle(cls, file_path):
+        """ Creates a roman text from a pickle file """
+        with open(file_path, 'rb') as f:
+            return pickle.load(f)
+
 
     @classmethod
     def from_rntxt(cls, file_path):
@@ -149,6 +157,11 @@ class RomanText:
         key_accuracy /= duration_sum
         key_degree_accuracy /= duration_sum
         return accuracy, key_accuracy, key_degree_accuracy
+
+    def save_pickle(self, file_path):
+        """ Save the roman text to a pickle file """
+        with open(file_path, 'wb') as f:
+            pickle.dump(self, f)
 
 class RomanNumeral:
     """ Class for a roman numeral with the inversion and the key"""

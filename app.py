@@ -30,7 +30,7 @@ def analyze(dir_path):
     if (dir_path/'analysis.txt').exists():
         m21_roman_text = RomanText.from_rntxt(dir_path/'analysis.txt')
     if (dir_path/'score_annotated.csv').exists():
-        augnet_roman_text = RomanText.from_csv(dir_path/'score_annotated.csv')
+        augnet_roman_text = RomanText.from_rntxt(dir_path/'score_annotated.rntxt')
     return note_graph, rhythm_tree_analyzed, tonal_graph, roman_text, m21_roman_text, augnet_roman_text
 
 def main():

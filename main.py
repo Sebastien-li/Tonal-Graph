@@ -57,6 +57,7 @@ def main(mxl_list):
         t = time()
         roman_text = RomanText.from_tonal_graph(tonal_graph)
         roman_text.save(file.parent / 'analysis_generated.txt')
+        roman_text.save_pickle(file.parent / 'analysis_generated.pkl')
         if (file.parent / 'analysis.txt').exists():
             m21_roman_text = RomanText.from_rntxt(file.parent/'analysis.txt')
             accuracy, key_accuracy, key_degree_accuracy = roman_text.compare(m21_roman_text)
@@ -89,5 +90,10 @@ if __name__ == '__main__':
     if args.piece:
         mxl_path_list = [Path(args.piece)]
     else:
-        mxl_path_list = list(Path('data').glob('*/*/score.mxl'))
+        #mxl_path_list = list(Path('dataset').glob('*/*/score.mxl')) + list(Path('dataset').glob('*/*/score.xml'))
+        mxl_path_list = list(Path(r'C:\Users\lxqse\Documents\Seb\ATIAM\Stage\AnalyseHarmo\datasets\WiR_Corpus').glob('*/*/*/*/score.mxl')) + \
+        list(Path(r'C:\Users\lxqse\Documents\Seb\ATIAM\Stage\AnalyseHarmo\datasets\WiR_Corpus').glob('*/*/*/*/score.xml'))
+        print(len(mxl_path_list))
+    print(mxl_path_list)
     main(mxl_path_list)
+

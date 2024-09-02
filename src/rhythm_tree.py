@@ -1,5 +1,6 @@
 """ RhytmTree class with functions to construct and analyze it """
 
+import sys
 from fractions import Fraction
 from pathlib import Path
 import pickle
@@ -8,6 +9,7 @@ import numpy as np
 from src.music_theory_classes import Pitch
 from src.utils import display_float, interval_collision, interval_in, get_relative_duration, octave_weight, duration_weight, doubling_weight
 
+
 def get_subdivision(duration:Fraction, beat_ql:Fraction, minimum_subdivision=0.5):
     """ Returns the subdivision of a duration given a beat quarter length"""
     duration = Fraction(duration)
@@ -15,7 +17,7 @@ def get_subdivision(duration:Fraction, beat_ql:Fraction, minimum_subdivision=0.5
     if duration <= minimum_subdivision:
         return None
     if duration%3 == 0:
-        duration = beat_ql * duration/3
+        duration = duration/3
     elif duration%2 == 0 or duration == 1:
         duration /= 2
     elif duration%1.5 == 0:

@@ -22,7 +22,7 @@ def click_rhythm_callback(app, analysis_dict):
         xmin, xmax = figure['layout']['xaxis']['range']
         if click_data is None:
             return figure, {}, '', invisible_style
-        _, composer_and_title, note_graph, rhythm_tree, tonal_graph, _, _ = analysis_dict[composer_and_title].values()
+        _, composer_and_title, note_graph, rhythm_tree, tonal_graph, _, _, _ = analysis_dict[composer_and_title].values()
         selected_node_idx = -1 if 'customdata' not in click_data['points'][0] \
             else click_data['points'][0]['customdata']
         #berk

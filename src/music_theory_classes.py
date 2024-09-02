@@ -107,6 +107,9 @@ class Quality:
             full_name = 'NO'
         return full_name
 
+    def __eq__(self, other):
+        return self.label == other.label
+
 class Qualities:
     """
     Class that represents a collection of qualities

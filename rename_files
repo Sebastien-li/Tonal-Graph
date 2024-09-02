@@ -1,0 +1,14 @@
+import os
+
+for composer in os.listdir('dataset'):
+    for dirpath in os.listdir('dataset/'+composer):
+        dirpath = 'dataset/' + composer + '/' + dirpath
+        if os.path.isfile(dirpath+'/analysis_generated.pkl'):
+            os.replace(dirpath+'/analysis_generated.pkl',dirpath+'/analysis_TonalGraph.pkl')
+            os.replace(dirpath+'/analysis_generated.txt',dirpath+'/analysis_TonalGraph.txt')
+        # os.replace(dirpath+'/score_annotated.rntxt',dirpath+'/analysis_AugmentedNet.rntxt')
+        # with open(dirpath+'/analysis_AugmentedNet.rntxt','r') as f:
+        #     data = f.read()
+        #     data = data.replace('ø', 'o/')
+        # with open(dirpath+'/analysis_AugmentedNet.rntxt','w') as f:
+        #     f.write(data)

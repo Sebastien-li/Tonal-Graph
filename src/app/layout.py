@@ -25,7 +25,6 @@ def get_layout(analysis_dict):
                          style = {'display':'inline-block', 'width':'33%'}),
             ]),
             html.H4('AugmentedNet analysis:'),
-            dash_table.DataTable(id='augnet_table', page_size=10,),
             dcc.Graph(id='time_graph_content',figure={}),
         ], id = 'score_information_container', style = {'width':'100%'}),
 

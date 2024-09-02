@@ -18,7 +18,6 @@ def choose_piece_callback(app, analysis_dict):
         Output('romantext_augnet','children'),
         Output('accuracy_content','children'),
         Output('roman_graph_content','figure'),
-        Output('augnet_table','data'),
         Input('dropdown-selection', 'value'),
     )
     def choose_piece(composer_and_title):
@@ -45,4 +44,4 @@ def choose_piece_callback(app, analysis_dict):
 
         time_figure = plot_time_graph(note_graph, rhythm_tree, tonal_graph)
         roman_figure = plot_roman_graph(note_graph.score, roman_text, m21_roman_text, augnet_roman_text)
-        return image_figure, time_figure, invisible_style, html_romantext, html_m21_roman_text, html_augnet_roman_text, accuracy_text, roman_figure, df.to_dict('records')
+        return image_figure, time_figure, invisible_style, html_romantext, html_m21_roman_text, html_augnet_roman_text, accuracy_text, roman_figure
