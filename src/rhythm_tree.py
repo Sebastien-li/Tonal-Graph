@@ -1,6 +1,5 @@
 """ RhytmTree class with functions to construct and analyze it """
 
-import sys
 from fractions import Fraction
 from pathlib import Path
 import pickle

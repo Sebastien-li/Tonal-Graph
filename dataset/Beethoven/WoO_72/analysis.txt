@@ -1,0 +1,511 @@
+Composer: Beethoven
+Title: Acht Variationen uber "Une fievre brulante" aus "Richard Coeur de Lion" von A.E.M. Gretry, B072
+Analyst: Devaney et al. 2015 "TAVERN" project, "Encoder a". See https://github.com/jcdevaney/TAVERN
+Proof-reader: Automated conversion and checks by Mark Gotham.
+
+Form: Theme a
+
+Time Signature: 3/4
+
+m0 C: I
+m1 I
+m2 IV64 b3 I
+m3 I b3 viio
+m4 I
+m5 V6 b3 I
+m6 ii6 b3 ii
+m7 V ||
+
+Form: Theme b
+
+m8 V b3 V
+m9 V
+m10 G: ii
+m11 V
+m12 V b3 V65
+m13 I b3 I6
+m14 IV6 b3 IV
+m15 Cad64 b3 V7 ||
+
+Form: Theme c
+
+m16 I
+m17 C: V7 b3 V42
+m18 iii b3 iii6
+m19 V7/ii 
+m20 ii
+m21 V7
+m22 V7
+m23 I ||
+
+Form: Theme d
+
+m24 V b3 I
+m25 I
+m26 IV64 b3 I
+m27 I
+m28 I b3 I6
+m29 ii6 b3 ii
+m30 V
+m31 I ||
+
+Form: Variation 1 a
+
+m32 I 
+m33a I
+m33b I
+m34 IV64 b3 I
+m35 I b3 viio
+m36 I
+m37 viio b3 I
+m38 IV
+m39 ii6 ||
+
+Form: Variation 1 b
+
+m40 V b2 V
+m41 G: I b3 viio/ii
+m42 ii
+m43 V
+m44 V b3 V42
+m45 I6
+m46 ii6
+m47 Cad64 b3 V7 ||
+
+Form: Variation 1 c
+
+m48 I b3 D: IV
+m49 IV b2 viio6 b3 IV64
+m50 V65
+m51 V
+m52 C: ii
+m53 IV b2 viio6 b3 IV64
+m54 V6
+m55 I b2 V6 b3 viio6/V ||
+
+Form: Variation 1 d
+
+m56 V
+m57 I
+m58 IV64 b3 I
+m59 I
+m60 I
+m61 viio b3 I
+m62 ii6
+m63 V7 
+m64 I ||
+
+Form: Variation 2 a
+
+m65a I
+m65b I b2 I
+m66 I+ b2 IV43 b3 I
+m67 I b2 ii42
+m68 I
+m69 V6 b3 I
+m70 IV6 b3 I6
+m71 IV b3 ii6 ||
+
+Form: Variation 2 b
+
+m72 V b3 V
+m73 G: I6
+m74 ii7
+m75 V7
+m76 V7 b3 V65
+m77 I b3 I6
+m78 IV
+m79 Cad64 b3 V7 ||
+
+Form: Variation 2 c
+
+m80 I 
+m81 d: #vio b2 viio6 b3 i
+m82 viio
+m83 V7 b2 i64 b3 V
+m84 i
+m85 C: V65 b2 V43 b3 V42
+m86 V65
+m87 I b2 V6 b3 viio6/V ||
+
+Form: Variation 2 d
+
+m88 V
+m89 I b2 I
+m90 I+ b2 IV43 b3 I
+m91 I b2 ii42
+m92 I
+m93 V6 b3 I
+m94 IV6 b3 I6
+m95 vi b3 V 
+m96 I ||
+
+Form: Variation 3 a
+
+m97a I
+m97b I
+m98 IV64 b3 I
+m99 I b3 viio
+m100 I b3 I6
+m101 ii6 b3 I6
+m102 ii b3 V65/V
+m103 V b3 V7/V 
+m104 V ||
+
+Form: Variation 3 b
+
+
+m105 G: I
+m106 ii
+m107 V
+m108 V
+m109 I6
+m110 IV b3 ii7
+m111 Cad64 b3 V7 
+m112 I ||
+
+Form: Variation 3 c
+
+m113 d: iio
+m114 V65
+m115 V
+m116 i
+m117 C: ii
+m118 V6
+m119 I ||
+
+Form: Variation 3 d
+
+m120 V b3 V
+m121 I
+m122 IV64 b3 I
+m123 I
+m124 I b3 I6
+m125 ii6 b3 I6
+m126 ii b3 V
+m127 I 
+m128 I ||
+
+Form: Variation 4 a
+
+m129a c: i
+m129b i
+m130 iv64
+m131 iiø42
+m132 i b3 i6
+m133 iiø65 b3 f: V43
+m134 i6 b3 V6
+m135 i b3 C: iio6 ||
+
+Form: Variation 4 b
+
+m136 V b2 Eb: I
+m137 I
+m138 ii42
+m139 V65
+m140 V65
+m141 I6
+m142 IV b3 ii6
+m143 V7 
+m144 I ||
+
+Form: Variation 4 c
+
+m145 f: viio42
+m146 viio42
+m147 viio42 b2 Cad64 b3 V42
+m148 i
+m149 i b3 c: viio7
+m150 viio7
+m151 i b2 iio6 b3 viio7/V ||
+
+Form: Variation 4 d
+
+m152 V b3 i
+m153 i
+m154 iv64
+m155 iiø42
+m156 i b3 i6
+m157 iiø65 b3 V43/iv
+m158 iv6 b3 iio6
+m159 V7 
+m160 i ||
+
+Form: Variation 5 a
+
+m161a C: I6
+m161b I6 b3 I
+m162 IV b3 I6
+m163 I6 b3 viio6
+m164 I b3 viio6/ii
+m165 ii6 b3 viio6/ii
+m166 ii
+m167 ii6 
+m168 V b2 V6 ||
+
+Form: Variation 5 b
+
+
+m169 G: I6
+m170 ii
+m171 viio6 b3 i
+m172 viio/ii b2 ii b3 IV
+m173 I6
+m174 IV
+m175 Cad64 b3 V7 
+m176 I b3 V ||
+
+Form: Variation 5 c
+
+
+m177 C: V
+m178 iii
+m179 V65/ii
+m180 ii
+m181 ii b2 viio
+m182 V7
+ ||
+
+Form: Variation 5 d
+
+m184 V
+m185 I6 b3 I
+m186 IV b3 I6
+m187 I6 b3 viio6
+m188 I b3 viio65/ii
+m189 ii6
+m190 V7
+m191 I
+m192 I ||
+
+Form: Variation 6 a
+
+m193a I b3 I
+m193b I
+m194 IV64 b3 I
+m195 I b3 viio43
+m196 I
+m197 ii b2 I6 b3 IV
+m198 V b2 vi b3 viio
+m199 I b2 ii b3 I ||
+
+Form: Variation 6 b
+
+m200 V b3 G: I
+m201 I
+m202 viio65/V b3 V65
+m203 V65 b3 viio/vi
+m204 V65/vi
+m205 vi b3 viio/ii
+m206 ii b2 I6 b3 IV
+m207 Cad64 b3 V ||
+
+Form: Variation 6 c
+
+m208 I
+m209 I b2 d: V43 b3 iv64
+m210 V65
+m211 V65 b2 i b3 V43
+m212 i
+m213 C: ii b2 viio6 b3 iv64
+m214 V65 b3 V43
+m215 I b2 V65 b3 I ||
+
+Form: Variation 6 d
+
+m216 V b3 I
+m217 I
+m218 IV64 b3 I
+m219 I b3 I
+m220 I
+m221 ii b2 I6 b3 IV
+m222 V b2 vi b3 viio
+m223 I b2 ii b3 V7 
+m224 I ||
+
+Form: Variation 7 a
+
+m225a I
+m225b I
+m226 IV64 b3 I
+m227 I
+m228 I
+m229 V b3 I64
+m230 V7
+m231 V ||
+
+Form: Variation 7 b
+
+m232 V b3 G: I
+m233 V7/ii
+m234 ii
+m235 V
+m236 V b2 V42 b3 I6
+m237 ii6
+m238 V
+m239 V7 ||
+
+Form: Variation 7 c
+
+m240 I b3 I
+m241 C: V
+m242 iii
+m243 V/ii
+m244 ii64
+m245 ii
+m246 V65
+m247 I ||
+
+Form: Variation 7 d
+
+m248 V b3 I
+m249 I
+m250 IV64 b3 I
+m251 I
+m252 I
+m253 V65 b3 I
+m254 V65
+m255 V 
+m256 I ||
+
+Form: Variation 8 a
+Time Signature: 2/4
+m257a I
+m257b I
+m258 IV64 b2.5 I
+m259 I b2 ii42
+m260 I
+m261 V b2 I64
+m262 IV6 b2 I64
+m263 ii65 b2 V65/V ||
+
+Form: Variation 8 b
+
+m264 V b2.5 G: I
+m265 I b2 I6
+m266 ii
+m267 V
+m268 V b2 viio64
+m269 I b2 I6
+m270 IV b2 IV6
+m271 Cad64 b2 V ||
+
+Form: Variation 8 a2
+
+m272 I
+m273 C: I
+m274 IV64 b2 I
+m275 I b2 ii42
+m276 I
+m277 V6 b2 I
+m278 IV6 b2 I6
+m279 IV b2 ii ||
+
+Form: Variation 8 b2
+
+m280 V b2.5 G: I6
+m281 I6
+m282 ii7
+m283 V7
+m284 V7
+m285 I b2 V42/IV
+m286 IV6 b2 IV
+m287 Cad64 b2 V7 ||
+
+Form: Variation 8 c
+
+m288 I b2.5 C: V6
+m289 V6 b2 V43/ii
+m290 V7/ii
+m291 V7/ii
+m292 ii
+m293 IV b2 viio6 b2.5 I
+m294 viio b2 V7 b2.5 viio
+m295 I b1.5 V43 b2 I6 b2.5 I ||
+
+Form: Variation 8 d
+
+m296 V b2.5 I
+m297 I
+m298 IV64 b2 I
+m299 I b2 ii42
+m300 I
+m301 V b2 I64
+m302 IV6 b2 I64
+m303 ii65 b2 V ||
+
+Form: Variation 8 c2
+
+m304 I b2.5 V
+m305 V
+m306 V/V/V
+m307 V/V/V
+m308 V/V
+m309 V42/V
+m310 V6
+m311 I ||
+
+Form: Variation 8 d2
+
+m312 V
+m313 I
+m314 IV64 b2 I
+m315 I b2 ii42
+m316 I
+m317 V6 b2 I
+m318 IV6 b2 ii6
+m319 V7 ||
+m320a V7
+m320b V7
+
+Form: Variation 8 e
+
+
+m321 Ab: I
+m322 I
+m323 I
+m324 IV64 b2 I
+m325 I
+m326 I
+m327 V6 b2 I
+m328 IV6 b2 I64
+m329 IV b2 IV6 ||
+
+Form: Variation 8 f
+
+m330 V
+m331 I
+m332 IV64 b2 I
+m333 I
+m334 I
+m335 V7/ii
+m336 ii
+m337 V7 
+m338 V7 ||
+
+Form: Variation 8 g
+
+m339 C: I
+m340 IV64 b2 I
+m341 I b2 V7
+m342 I
+m343 V6 b2 I
+m344 IV6 b2 ii6
+m345 V
+m346 I
+m347 V6 b2 I
+m348 IV6 b2 ii6
+m349 V
+m350 I
+m351 V7
+m352 I
+m353 V7
+m354 I
+m355 V7
+m356 I
+m357 V7
+m358 I
+m359 V7
+m360 I
+m361 I
+m362 I

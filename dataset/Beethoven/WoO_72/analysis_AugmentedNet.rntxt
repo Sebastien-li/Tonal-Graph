@@ -1,0 +1,366 @@
+Composer: Compositeur / Arrangeur
+Title: Partition sans titre
+Analyst: AugmentedNet v1.9.0 - https://github.com/napulen/AugmentedNet
+
+m1 C: I
+m2 I b3 I
+m3 I b3 I
+m4 I
+m5 V b3 I
+m6 ii6
+m7 V
+m8 V b3 V
+m9 V
+m10 ii/V
+m11 V/V b3 V/V
+m12 V/V b3 V7/V
+m13 I/V b3 V
+m14 I b3 I
+m15 V64 b3 V7/V
+m16 V
+m17 V b2 I64 b3 I64
+m18 I6 b3 I64
+m19 V7/ii b3 V/ii
+m20 ii
+m21 V7
+m22 V7 b2 V7 b3 V65
+m23 I
+m24 V
+m25 I
+m26 IV64
+m27 I b3 viio
+m28 I
+m29 ii6
+m30 V7
+m31 I
+m32 I
+m34 I
+m35 I
+m36 I b3 I
+m37 I
+m38 I b3 I
+m39 IV65 b3 IV
+m40 ii6
+m41 V b2 V b3 V
+m42 V
+m43 viio/65/V
+m44 V6/V
+m45 V7/V b3 V2/V
+m46 V6
+m47 I b3 ii6/V
+m48 V64
+m49 V
+m50 V b2 viio64/ii b3 V
+m51 V65/ii
+m52 V65/ii
+m53 i/ii
+m54 ii6 b2 viio6 b3 I
+m55 V65
+m56 I b2 V6 b3 viio6/V
+m57 V
+m58 I
+m59 I
+m60 I
+m61 I
+m62 I b3 I
+m63 ii6
+m64 V7
+m65 I
+m67 I
+m68 I
+m69 I b3 I
+m70 I
+m71 V6 b3 I
+m72 IV6 b3 I6
+m73 IV b3 ii6
+m74 V
+m75 V6
+m76 vi7 b3 vi
+m77 V7/V
+m78 V7/V b3 V65/V
+m79 I/V
+m80 I
+m81 I64/V b3 V7/V
+m82 I/V
+m83 viio64 b3 ii
+m84 viio/ii
+m85 V7/ii b3 V/ii
+m86 ii
+m87 V65
+m88 V65
+m89 I b2 V6 b3 vi7
+m90 V
+m91 I
+m92 I
+m93 I
+m94 I
+m95 V6
+m96 IV6 b3 I6
+m97 IV b3 V7
+m98 I
+m100 I
+m101 IV64 b3 I
+m102 I
+m103 I b3 I6
+m104 ii6 b3 I6
+m105 ii b3 V7/V
+m106 V
+m107 G: I
+m108 I
+m109 ii
+m110 V7
+m111 V7
+m112 I6
+m113 IV
+m114 V7
+m115 I
+m116 C: ii/IV b3 I6
+m117 V65/ii
+m118 V/ii
+m119 ii
+m120 ii
+m121 V65
+m122 I b2.5 I
+m123 V
+m124 I
+m125 IV b3 I
+m126 I
+m127 I
+m128 ii6 b3 ii6
+m129 ii b3 V7
+m130 I
+m131 I
+m133 i/i b2 c: i
+m134 iv64
+m135 iio6
+m136 i
+m137 iio/65 b3 V43/iv
+m138 i6/iv b3 V6/iv
+m139 iv
+m140 i64 b3 iii/III
+m141 Eb: I
+m142 ii2
+m143 V65
+m144 V65
+m145 I6
+m146 ii65
+m147 V7
+m148 I b3 I64
+m149 I64 b3 viio2/ii
+m150 viio2/ii b3 f: viio2
+m151 viio2 b2 i64 b3 V2
+m152 c: ii6/III
+m153 ii6/III b3 viio7
+m154 viio7
+m155 i b2 iio6 b3 viio7/v
+m156 V
+m157 i
+m158 iv64
+m159 iio/65
+m160 i
+m161 iio/65 b3 V43/iv
+m162 iv6
+m163 i64 b3 V7
+m164 i
+m165 b3 I6/I
+m166 C: I6
+m167 IV b3 I6
+m168 I6 b3 viio6
+m169 I b3 viio6/ii
+m170 ii6 b3 viio6/ii
+m171 ii
+m172 ii6 b2 ii6
+m173 V b2 V b3 V
+m174 V
+m175 ii/V
+m176 V6/V b3 i/v
+m177 viio/vi b2 ii/V b3 ii6/V
+m178 V6
+m179 I b3 ii65/V
+m180 I64/V b3 V7/V
+m181 I/V b3 I6/V
+m182 V6 b2 viio/ii b3 ii
+m183 iii
+m184 V6/ii
+m185 i/ii
+m186 ii b3 V65
+m187 V7
+m188 I
+m189 V
+m190 I6
+m191 IV b3 I6
+m192 I6
+m193 I b3 viio65/ii
+m194 ii6
+m195 V7
+m196 I
+m197 I
+m199 I
+m200 I b3 I
+m201 I b3 viio43/i
+m202 I
+m203 ii b3 ii6
+m204 V b3 V
+m205 I b3 I
+m206 V
+m207 V
+m208 viio65/ii b3 viio65/iii
+m209 viio65/iii b3 viio7/iii
+m210 V65/iii
+m211 iii b3 V/vi
+m212 ii/V b3 vi6
+m213 V64
+m214 V
+m215 V
+m216 V65/ii
+m217 V65/ii
+m218 ii
+m219 ii b3 viio7/i
+m220 V65
+m221 I b2 V7 b3 I
+m222 V b3 I
+m223 I
+m224 I b3 I
+m225 I b3 viio43/i
+m226 I
+m227 ii
+m228 V7
+m229 I b3 V7
+m230 I
+m232 I
+m233 IV6
+m234 I64 b3 I
+m235 I6
+m236 V
+m237 V7
+m238 V
+m239 V
+m240 V65/vi
+m241 i64/vi
+m242 G: V6
+m243 V b2.5 V b3 I6
+m244 C: ii64/V
+m245 G: V7
+m246 V65
+m247 I
+m248 I
+m249 C: I6
+m250 V7/ii
+m251 ii64
+m252 ii
+m253 V7
+m254 I
+m255 V b3 I
+m256 I
+m257 IV6
+m258 I64 b3 V2
+m259 I6
+m260 V
+m261 V7
+m262 V7
+m263 I
+m265 I
+m266 IV64 b2.5 I
+m267 I64
+m268 I
+m269 V6 b1.5 I64
+m270 IV6 b2 I64
+m271 ii65
+m272 I/V
+m273 I/V
+m274 V/V
+m275 V/V
+m276 V/V b2 V2/V
+m277 I/V
+m278 I
+m279 I64/V b2 V/V
+m280 I/V
+m281 I
+m282 IV64 b2 I
+m283 I b2 V43
+m284 I
+m285 V6 b2 I
+m286 IV6 b2 I6
+m287 IV b2 ii
+m288 V
+m289 V
+m290 ii7/V
+m291 V7/V
+m292 V7/V
+m293 V
+m294 I6
+m295 V7/V
+m296 I/V
+m297 V b2 viio6/ii b2.5 V64
+m298 V65/ii
+m299 V7/ii
+m300 ii
+m301 ii6
+m302 V65 b2 V7
+m303 I b2 I
+m304 V
+m305 I
+m306 IV64 b2.5 I
+m307 I64 b2 V7
+m308 I
+m309 V6 b2 I
+m310 IV6 b2 I64
+m311 I b2 V
+m312 I
+m313 V b2 viio6/ii
+m314 V6/ii
+m315 V6/ii
+m316 ii
+m317 ii b2 viio6
+m318 V6
+m319 I
+m320 V
+m321 I
+m322 IV64
+m323 I b2 V43
+m324 I
+m325 V6 b2 I
+m326 IV6 b2 ii6
+m327 V7
+m330 Ab: I
+m331 I
+m332 I
+m333 Db: I/V b2 Ab: I
+m334 I
+m335 I
+m336 V6 b2 I
+m337 IV6
+m338 Db: IV/V
+m339 Ab: V
+m340 I
+m341 I b2 I
+m342 I b2 V7
+m343 I
+m344 f: V7/iv
+m345 iv
+m346 V7/V
+m347 C: V7
+m348 I
+m349 IV64 b2 I
+m350 I b2 V7
+m351 I
+m352 V6 b2 I
+m353 IV6
+m354 V
+m355 I
+m356 V6 b2 I
+m357 IV6
+m358 V
+m359 I
+m360 V7
+m361 I
+m362 V7
+m363 I
+m364 V7
+m365 I
+m366 V7
+m367 I
+m368 V7
+m369 I
+m370 I
+m371 I

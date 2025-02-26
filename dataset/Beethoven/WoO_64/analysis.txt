@@ -1,0 +1,156 @@
+Composer: Beethoven
+Title: Sechs Variationen uber ein Schweizer Lied, B064
+Analyst: Devaney et al. 2015 "TAVERN" project, "Encoder a". See https://github.com/jcdevaney/TAVERN
+Proof-reader: Automated conversion and checks by Mark Gotham.
+Edited by Sebastien Li
+
+Form: Theme a
+
+Time Signature: 4/4
+
+m0 F: I
+m1 I b2 V6 b3 I b4 vi
+m2 V ||
+
+Form: Theme b
+
+m3 I b4 IV/V
+m4 I6/V
+m5 ii/V b3 V/V ||
+
+Form: Theme c
+
+m6 I/V b4 V
+m7 I b2 V b3 IV b4 I6
+m8 I b2 V b3 IV b4 I6
+m9 I b2 V6 b3 I b4 IV6
+m10 V
+m11 I ||
+
+Form: Variation 1 a
+
+m12a b4 I
+m12b I b2 V6 b3 I b4 vi
+m13 V 
+m14 I b4 C: V ||
+
+Form: Variation 1 b
+
+m15 I6 b2 V64 b3 I b4 I6
+m16 ii6 b3 V7 ||
+m17 I b4 F: V
+
+Form: Variation 1 c
+
+
+m18 I b2 V b3 IV b4 I6
+m19 I b2 V b3 IV b4 V42
+m20 I6 b2 V6 b3 I b4 IV6
+m21 V ||
+m22 I
+
+Form: Variation 2 a
+
+m23a b4 I
+m23b I b2 V6 b3 I b4 vi
+m24 V b3 V42 ||
+m25 I6 b3 I b4 C: IV
+
+Form: Variation 2 b
+
+m26 I6 b2 V64 b3 I
+m27 ii b3 V65 ||
+m28 I b4 F: V
+
+Form: Variation 2 c
+
+m29 I b2 V b3 vi6 b4 V6
+m30 vi b2 V b3 vi6 b4 I6
+m31 I64 b2 V42 b3 I6 b4 ii
+m32 V6 b3 V ||
+m33 I 
+
+Form: Variation 3 a
+m34a b4 f: i
+m34b i b2 V6 b3 i b4 VI
+m35 Cad64 b3 V7 ||
+m36 i 
+
+Form: Variation 3 b
+
+m37 bb: V b2 i64 b3 V7
+m38 i6 b3 i ||
+
+Form: Variation 3 c
+
+m39 V b4 V42
+m40 i6 b2 V43 b3 i b4 V42/iv
+m41 i6 b2 V43 b3 i b4 f: V64
+m42 i6 b2 V6 b3 i b4 iv6
+m43 Cad64 V7 ||
+m44 i 
+
+Form: Variation 4 a
+m45a b4 F: I
+m45b I
+m46 V6 b3 V42 ||
+m47 I6 b3 C: It
+
+Form: Variation 4 b
+
+m48 Cad64 b3 vi
+m49 ii6 b3 V7 ||
+m50 I b4 F: V
+
+Form: Variation 4 c
+
+m51 I6 b3 IV b4 I6
+m52 I b2 I6 b3 IV b4 V42
+m53 I6 b2 ii65 b3 V43/IV b4 IV6
+m54 V65 b2 I b3 V43/V b4 V7 ||
+m55 I
+
+Form: Variation 5 a
+
+m56a b4 V
+m56b I b2 V65 b3 I b4 IV6
+m57 V ||
+
+Form: Variation 5 b
+
+m58 I6 b4 IV/V
+m59 I6/V b2 V43/V b3 I/V b4 I6/V
+m60 ii6/V b3 V7/V ||
+
+Form: Variation 5 c
+
+m61 I6/V b3 I/V b4 V42
+m62 I6 b3 IV b4 I6
+m63 I b3 IV b4 V43
+m64 I b2 V43 b3 I6 b4 ii6
+m65 V7 ||
+m66 I
+
+Form: Variation 6 a
+
+m67a b4 V
+m67b I
+m68 V7 
+m69 I b4 C: I
+
+Form: Variation 6 b
+
+m70 I
+m71 IV b3 V7 
+m72 I b4 F: V
+
+Form: Variation 6 c
+
+
+m73 I b2 V6 b3 vi b4 V
+m74 vi6 b2 V6 b3 vi b4 V
+m75 I b2 V43 b3 I6 b4 ii6
+m76 Cad64 b3 V7
+m77 I b3 V7
+m78 I b3 V7
+m79 I

@@ -91,8 +91,8 @@ if __name__ == '__main__':
         mxl_path_list = [Path(args.piece)]
     else:
         #mxl_path_list = list(Path('dataset').glob('*/*/score.mxl')) + list(Path('dataset').glob('*/*/score.xml'))
-        mxl_path_list = list(Path(r'C:\Users\lxqse\Documents\Seb\ATIAM\Stage\AnalyseHarmo\datasets\WiR_Corpus').glob('*/*/*/*/score.mxl')) + \
-        list(Path(r'C:\Users\lxqse\Documents\Seb\ATIAM\Stage\AnalyseHarmo\datasets\WiR_Corpus').glob('*/*/*/*/score.xml'))
+        #mxl_path_list = list(Path(r'C:\Users\lxqse\Documents\Seb\ATIAM\Stage\AnalyseHarmo\datasets\WiR_Corpus').glob('*/*/*/*/score.mxl')) + \
+        mxl_path_list = [Path(r'assets\scores\Schubert\01_Das_Wandern\score.mxl')]
         print(len(mxl_path_list))
     print(mxl_path_list)
     main(mxl_path_list)

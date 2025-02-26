@@ -1,6 +1,7 @@
 """ Module for the RomanText class """
 from fractions import Fraction
 import pickle
+import json
 import music21
 import pandas as pd
 from src.tonal_graph import TonalGraph
@@ -22,6 +23,26 @@ class RomanText:
         """ Creates a roman text from a pickle file """
         with open(file_path, 'rb') as f:
             return pickle.load(f)
+
+    @classmethod
+    def from_chord_gnn(cls, file_path, divs_pq):
+        """ Creates a roman text from a chord gnn pickle file """
+        with open(file_path, 'rb') as f:
+            annotations = json.load(f)
+        roman_text = cls()
+        key = None
+        for (rn_str, onset) in annotations:
+            s = rn_str.split(':')
+            if len(s) == 2:
+                key, fig = s
+            else:
+                fig = s[0]
+
+            m21_rn = music21.roman.RomanNumeral(fig, offset=onset/divs_pq, keyOrScale=key)
+            rn = RomanNumeral.from_music21_rn(untonicize(m21_rn), qualities, [major_mode, minor_mode])
+            roman_text.rn_list.append(rn)
+        return roman_text
+
 
 
     @classmethod
